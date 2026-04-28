@@ -1,46 +1,80 @@
-# Astro Starter Kit: Basics
+# irc.inovuslabs.org
 
-```sh
-bun create astro@latest --template basics
-```
+Static Astro landing page for the Inovus Labs IRC server.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+The IRC daemon is separate from this site:
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+irc.inovuslabs.org:443  -> this webpage, through your reverse proxy
+irc.inovuslabs.org:6697 -> Ergo IRC TLS, direct Docker port publish
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Do not bind this webpage container directly to public `80` or `443` on the Oracle host if Listmonk or a reverse proxy is already using those ports.
 
-## 🧞 Commands
+## Local Development
 
-All commands are run from the root of the project, from a terminal:
+```sh
+npm install
+npm run dev
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun run dev`             | Starts local dev server at `localhost:4321`      |
-| `bun run build`           | Build your production site to `./dist/`          |
-| `bun run preview`         | Preview your build locally, before deploying     |
-| `bun run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun run astro -- --help` | Get help using the Astro CLI                     |
+Production build:
 
-## 👀 Want to learn more?
+```sh
+npm run build
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Docker Build
+
+```sh
+docker build -t irc-web .
+docker run --rm -p 8081:80 irc-web
+```
+
+Open `http://localhost:8081`.
+
+## Oracle Deployment
+
+Recommended deployment shape:
+
+```text
+Oracle public IP
+├─ 80/443  -> existing reverse proxy
+│  ├─ listmonk.inovuslabs.org -> Listmonk container
+│  └─ irc.inovuslabs.org      -> irc-web container on 127.0.0.1:8081
+└─ 6697    -> Ergo container directly
+```
+
+On the Oracle server:
+
+```sh
+cd /home/ubuntu
+
+git clone <repo-url> irc-web
+cd irc-web
+
+docker compose -f docker-compose.web.yml up -d --build
+```
+
+This exposes the webpage only on the host loopback interface:
+
+```text
+127.0.0.1:8081 -> irc-web:80
+```
+
+Then configure your existing reverse proxy for:
+
+```text
+Host: irc.inovuslabs.org
+Upstream: http://127.0.0.1:8081
+TLS: enabled at the reverse proxy
+```
+
+If your reverse proxy is a Docker container and cannot reach `127.0.0.1:8081`, attach `irc-web` to the same Docker network as the proxy and proxy to `http://irc-web:80` instead.
+
+Ergo should remain separate and keep publishing only the IRC TLS port:
+
+```yaml
+ports:
+  - "6697:6697"
+```

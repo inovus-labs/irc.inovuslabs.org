@@ -1,0 +1,11 @@
+services:
+  irc-web:
+    build:
+      context: .
+    image: irc-inovuslabs-web:latest
+    container_name: irc-web
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+    mem_limit: 128m
