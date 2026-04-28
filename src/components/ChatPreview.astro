@@ -1,0 +1,353 @@
+---
+import type { ChatLine } from "../data/site";
+import { chatScript, colorFor, members, youNick, site } from "../data/site";
+
+const userCount = members.length;
+
+function typingAs(line: ChatLine): string {
+  if (line.type === "sys") return "server";
+  if (line.type === "topic") return line.by;
+  return line.who;
+}
+---
+<section class="card chat-card" aria-label={`Sample chat in ${site.defaultChannel}`}>
+  <div class="chan-bar">
+    <span class="chan-name"><span class="hash">#</span>lobby</span>
+    <span class="chan-meta">{userCount} users</span>
+    <span class="chan-meta dim">topic: #lobby · Thu 7pm · kiosk</span>
+  </div>
+
+  <div
+    class="chat"
+    data-typing-ms="1550"
+    data-after-msg-ms="400"
+    data-between-loops-ms="2800"
+  >
+    {chatScript.map((line, i) => {
+      const attrs = {
+        class: "row chat-line",
+        hidden: true,
+        "data-typing-as": typingAs(line),
+        "data-reveal-group": line.group ?? `seg-${i}`,
+      };
+
+      if (line.type === "sys") {
+        const arrow = line.arrow === "in" ? "→" : line.arrow === "out" ? "←" : "·";
+        const arrowClass = line.arrow === "in" ? "in" : line.arrow === "out" ? "out" : "dim";
+        return (
+          <div {...attrs}>
+            <span class="ts">{line.ts}</span>
+            <span class={`marker ${arrowClass}`}>{arrow}</span>
+            <span class="body sys">{line.text}</span>
+          </div>
+        );
+      }
+
+      if (line.type === "join") {
+        return (
+          <div {...attrs}>
+            <span class="ts">{line.ts}</span>
+            <span class="marker in">→</span>
+            <span class="body sys">
+              <span class={`nick ${colorFor(line.who)}`}>{line.who}</span>
+              {" joined "}
+              <span class="chan">{site.defaultChannel}</span>
+            </span>
+          </div>
+        );
+      }
+
+      if (line.type === "part") {
+        return (
+          <div {...attrs}>
+            <span class="ts">{line.ts}</span>
+            <span class="marker out">←</span>
+            <span class="body sys">
+              <span class={`nick ${colorFor(line.who)}`}>{line.who}</span>
+              {" left"}{line.reason ? ` (${line.reason})` : ""}
+            </span>
+          </div>
+        );
+      }
+
+      if (line.type === "topic") {
+        return (
+          <div {...attrs}>
+            <span class="ts">{line.ts}</span>
+            <span class="marker topic">★</span>
+            <span class="body sys">
+              {line.text}
+              {" "}<span class="dim">— set by</span>{" "}
+              <span class={`nick ${colorFor(line.by)}`}>{line.by}</span>
+            </span>
+          </div>
+        );
+      }
+
+      if (line.type === "action") {
+        return (
+          <div {...attrs}>
+            <span class="ts">{line.ts}</span>
+            <span class="marker dim">*</span>
+            <span class="body action">
+              <span class={`nick ${colorFor(line.who)}`}>{line.who}</span> {line.text}
+            </span>
+          </div>
+        );
+      }
+
+      return (
+        <div {...attrs}>
+          <span class="ts">{line.ts}</span>
+          <span class={`marker nick ${colorFor(line.who)}`}>{line.who}</span>
+          <span class="body">{line.text}</span>
+        </div>
+      );
+    })}
+
+    <div class="row typing-row" hidden aria-live="polite">
+      <span class="ts"></span>
+      <span class="marker dim">⋯</span>
+      <span class="body dim">
+        <span class="t-name" data-typing>server</span>
+        {" is typing"}
+        <span class="t-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </span>
+    </div>
+  </div>
+  <noscript>
+    <style>
+      section.chat-card .chat .chat-line[hidden] {
+        display: grid !important;
+      }
+      section.chat-card .chat .typing-row {
+        display: none !important;
+      }
+    </style>
+  </noscript>
+</section>
+
+<style>
+  .chat-card {
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chan-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #10141a 0%, #0c0f14 100%);
+    font-size: 0.76rem;
+    flex-wrap: wrap;
+  }
+  .chan-name { color: var(--text-strong); font-weight: 500; }
+  .chan-name .hash { color: var(--accent); margin-right: 1px; }
+  .chan-meta { color: var(--muted); font-size: 0.78rem; }
+  .chan-meta.dim { color: var(--muted-2); }
+
+  .chat {
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #07090d;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .chat .row[hidden],
+  .typing-row[hidden] {
+    display: none !important;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 2.8em 4.8em 1fr;
+    column-gap: 0.5rem;
+    align-items: baseline;
+    padding: 0.03rem 0;
+  }
+
+  .ts {
+    color: var(--muted-2);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    text-align: right;
+  }
+
+  .marker {
+    text-align: right;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .marker.in    { color: var(--accent); }
+  .marker.out   { color: #f4736a; }
+  .marker.topic { color: var(--u6); }
+  .marker.dim   { color: var(--muted-2); }
+  .marker.nick  { font-weight: 500; }
+
+  .body { color: var(--text); min-width: 0; }
+  .body.sys     { color: var(--muted); }
+  .body.action  { color: var(--u3); font-style: italic; }
+  .body .nick   { font-weight: 500; }
+  .body .chan   { color: var(--accent); }
+  .body .dim    { color: var(--muted-2); }
+
+  .nick.u1 { color: var(--u1); }
+  .nick.u2 { color: var(--u2); }
+  .nick.u3 { color: var(--u3); }
+  .nick.u4 { color: var(--u4); }
+  .nick.u5 { color: var(--u5); }
+  .nick.u6 { color: var(--u6); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .chat-line.is-revealed {
+      animation: chatLineIn 0.32s ease-out;
+    }
+  }
+  @keyframes chatLineIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .typing-row { color: var(--muted); }
+  .t-name {
+    font-weight: 500;
+    color: var(--u2);
+    transition: color 0.16s ease, opacity 0.16s ease;
+  }
+  .t-name.t-server {
+    color: var(--muted-2);
+    font-weight: 400;
+  }
+  .t-dots {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+    margin-left: 0.3rem;
+    height: 1em;
+  }
+  .t-dots i {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--muted);
+    display: inline-block;
+    animation: typedot 1.2s ease-in-out infinite;
+  }
+  .t-dots i:nth-child(2) { animation-delay: 0.15s; }
+  .t-dots i:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes typedot {
+    0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
+    30%           { opacity: 1;    transform: translateY(-2px); }
+  }
+
+  @media (max-width: 480px) {
+    .row {
+      grid-template-columns: 2.6em 4.4em 1fr;
+      column-gap: 0.5rem;
+    }
+    .chat { font-size: 0.82rem; }
+  }
+</style>
+
+<script>
+  function sleep(ms: number) {
+    return new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+  }
+
+  const chat = document.querySelector<HTMLElement>(".chat");
+  const typingRow = chat?.querySelector<HTMLElement>(".typing-row");
+  const nameEl = chat?.querySelector<HTMLElement>("[data-typing]");
+  const lines =
+    chat != null ? (Array.from(chat.querySelectorAll<HTMLElement>(".chat-line")) as HTMLElement[]) : [];
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const typingMs = Number(chat?.dataset.typingMs) || 1550;
+  const afterMsgMs = Number(chat?.dataset.afterMsgMs) || 400;
+  const betweenLoopsMs = Number(chat?.dataset.betweenLoopsMs) || 2800;
+
+  function setTypingLabel(raw: string) {
+    nameEl?.classList.toggle("t-server", raw === "server");
+    if (nameEl) nameEl.textContent = raw;
+  }
+
+  function scrollIfOverflow() {
+    if (!chat || chat.scrollHeight <= chat.clientHeight + 2) return;
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function splitRevealBatches(nodes: HTMLElement[]): HTMLElement[][] {
+    const batches: HTMLElement[][] = [];
+    let i = 0;
+    while (i < nodes.length) {
+      const g = nodes[i].dataset.revealGroup;
+      const batch = [nodes[i]];
+      let j = i + 1;
+      while (j < nodes.length && nodes[j].dataset.revealGroup === g) {
+        batch.push(nodes[j]);
+        j++;
+      }
+      batches.push(batch);
+      i = j;
+    }
+    return batches;
+  }
+
+  async function runSequence() {
+    if (!chat || !typingRow || lines.length === 0) return;
+
+    const batches = splitRevealBatches(lines);
+
+    for (;;) {
+      for (const batch of batches) {
+        const label = batch[0].dataset.typingAs ?? "···";
+        setTypingLabel(label);
+        typingRow.hidden = false;
+        scrollIfOverflow();
+        await sleep(typingMs);
+        typingRow.hidden = true;
+        for (const row of batch) {
+          row.hidden = false;
+          row.classList.remove("is-revealed");
+          void row.offsetWidth;
+          row.classList.add("is-revealed");
+        }
+        scrollIfOverflow();
+        await sleep(afterMsgMs);
+      }
+      await sleep(betweenLoopsMs);
+      for (const row of lines) {
+        row.hidden = true;
+        row.classList.remove("is-revealed");
+      }
+    }
+  }
+
+  if (chat && lines.length > 0) {
+    if (prefersReduced) {
+      for (const row of lines) {
+        row.hidden = false;
+      }
+      if (typingRow) typingRow.hidden = true;
+    } else {
+      void runSequence();
+    }
+  }
+</script>

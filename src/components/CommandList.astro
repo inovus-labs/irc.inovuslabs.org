@@ -1,0 +1,81 @@
+---
+import { commands } from "../data/site";
+import CopyButton from "./CopyButton.astro";
+---
+<section class="card commands-card" id="commands" aria-labelledby="cmd-h">
+  <h2 class="section" id="cmd-h"><span class="num">03</span>Command cheat sheet</h2>
+  <dl class="cmds pane-scroll">
+    {commands.map((c) => (
+      <div class="row">
+        <div class="cmd-line">
+          <code>{c.cmd}</code>
+          <CopyButton value={c.cmd} label="Copy command" />
+        </div>
+        <span class="desc">{c.desc}</span>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  .commands-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .commands-card :global(.section) {
+    flex-shrink: 0;
+  }
+  .cmds {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin: 0;
+    background: #07090d;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    flex: 1;
+    min-height: 0;
+  }
+  .cmds .row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.42rem 0.62rem 0.42rem 0.75rem;
+    border-bottom: 1px dashed var(--line);
+    align-items: stretch;
+    transition: background 0.15s ease;
+  }
+  .cmds .cmd-line {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  .cmds .cmd-line code {
+    flex: 1;
+    min-width: 0;
+    color: var(--accent);
+    font-size: 0.92em;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .cmds .row:last-child { border-bottom: 0; }
+  .cmds .row:hover { background: rgba(121, 224, 137, 0.03); }
+
+  .cmds .desc {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.35;
+    padding-left: 0.05rem;
+  }
+
+  @media (max-width: 540px) {
+    .cmds .row {
+      padding: 0.42rem 0.55rem 0.42rem 0.65rem;
+    }
+  }
+</style>

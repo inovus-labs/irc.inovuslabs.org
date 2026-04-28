@@ -1,143 +1,387 @@
 ---
-const network = "inovuslabs";
-const server = "irc.inovuslabs.org";
-const portsPlain = "6667";
-const portsTLS = "6697";
-const channels = ["#lobby", "#dev", "#random"];
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TerminalShell from "../components/TerminalShell.astro";
+import HeroCard from "../components/HeroCard.astro";
+import ChatPreview from "../components/ChatPreview.astro";
+import CommandList from "../components/CommandList.astro";
+import CopyButton from "../components/CopyButton.astro";
+import { site } from "../data/site";
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{network} IRC</title>
-    <meta name="description" content={`Join the ${network} IRC network at ${server}`} />
-    <style>
-      :root {
-        color-scheme: dark;
-        --bg: #0c0d10;
-        --fg: #d8d6cf;
-        --muted: #8a8880;
-        --accent: #5dcaa5;
-        --line: #1f2127;
-      }
-      * { box-sizing: border-box; }
-      html, body { margin: 0; background: var(--bg); color: var(--fg); }
-      body {
-        font: 15px/1.6 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        padding: 2rem 1.25rem;
-      }
-      main { max-width: 640px; width: 100%; }
-      h1 {
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
-        font-weight: 500;
-        margin: 0 0 0.25em;
-        letter-spacing: -0.02em;
-      }
-      h1 .net { color: var(--accent); }
-      .tag { color: var(--muted); margin: 0 0 2.5rem; font-size: 0.95em; }
-      h2 {
-        font-size: 0.8rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: var(--muted);
-        margin: 2rem 0 0.75rem;
-      }
-      .box {
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        padding: 1rem 1.25rem;
-        margin: 0;
-      }
-      .box dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 1.25rem; }
-      .box dt { color: var(--muted); }
-      .box dd { margin: 0; }
-      .box code { color: var(--accent); }
-      ul.chans { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-      ul.chans li {
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 0.25rem 0.85rem;
-        font-size: 0.9em;
-      }
-      pre {
-        background: #07080a;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        padding: 0.9rem 1rem;
-        overflow-x: auto;
-        margin: 0;
-        font-size: 0.85em;
-      }
-      pre .c { color: var(--muted); }
-      footer {
-        margin-top: 3rem;
-        padding-top: 1.25rem;
-        border-top: 1px solid var(--line);
-        color: var(--muted);
-        font-size: 0.85em;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-      a { color: var(--accent); text-decoration: none; }
-      a:hover { text-decoration: underline; }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1><span class="net">{network}</span> irc</h1>
-      <p class="tag">A small IRC network for the inovuslabs community.</p>
-
-      <h2>connection</h2>
-      <div class="box">
-        <dl>
-          <dt>server</dt><dd><code>{server}</code></dd>
-          <dt>tls</dt><dd><code>{portsTLS}</code></dd>
-          <dt>plain</dt><dd><code>{portsPlain}</code></dd>
-          <dt>network</dt><dd><code>{network}</code></dd>
-        </dl>
+<BaseLayout>
+  <TerminalShell>
+    <section class="bento" aria-label="IRC overview layout">
+      <div class="hero-cell">
+        <HeroCard />
       </div>
 
-      <h2>channels</h2>
-      <ul class="chans">
-        {channels.map((c) => <li><code>{c}</code></li>)}
-      </ul>
+      <section class="card quick-cell" aria-labelledby="quick-h">
+        <div class="quick-head">
+          <h2 class="section section-tight" id="quick-h"><span class="num">01</span>Get started fast</h2>
+          <div class="os-toggle" role="radiogroup" aria-label="Operating system for install command">
+            <button type="button" class="os-toggle-btn is-active" role="radio" aria-checked="true" data-os="mac" title="macOS" aria-label="macOS install command">
+              <svg class="os-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" />
+              </svg>
+            </button>
+            <button type="button" class="os-toggle-btn" role="radio" aria-checked="false" data-os="linux" title="Linux" aria-label="Linux install command">
+              <svg class="os-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M14.62,8.35C14.2,8.63 12.87,9.39 12.67,9.54C12.28,9.85 11.92,9.83 11.53,9.53C11.33,9.37 10,8.61 9.58,8.34C9.1,8.03 9.13,7.64 9.66,7.42C11.3,6.73 12.94,6.78 14.57,7.45C15.06,7.66 15.08,8.05 14.62,8.35M21.84,15.63C20.91,13.54 19.64,11.64 18,9.97C17.47,9.42 17.14,8.8 16.94,8.09C16.84,7.76 16.77,7.42 16.7,7.08C16.5,6.2 16.41,5.3 16,4.47C15.27,2.89 14,2.07 12.16,2C10.35,2.05 9,2.81 8.21,4.4C8,4.83 7.85,5.28 7.75,5.74C7.58,6.5 7.43,7.29 7.25,8.06C7.1,8.71 6.8,9.27 6.29,9.77C4.68,11.34 3.39,13.14 2.41,15.12C2.27,15.41 2.13,15.7 2.04,16C1.85,16.66 2.33,17.12 3.03,16.96C3.47,16.87 3.91,16.78 4.33,16.65C4.74,16.5 4.9,16.6 5,17C5.65,19.15 7.07,20.66 9.24,21.5C13.36,23.06 18.17,20.84 19.21,16.92C19.28,16.65 19.38,16.55 19.68,16.65C20.14,16.79 20.61,16.89 21.08,17C21.57,17.09 21.93,16.84 22,16.36C22.03,16.1 21.94,15.87 21.84,15.63Z" />
+              </svg>
+            </button>
+            <button type="button" class="os-toggle-btn" role="radio" aria-checked="false" data-os="windows" title="Windows" aria-label="Windows install command">
+              <svg class="os-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M3,12V6.75L9,5.43V11.91L3,12M20,3V11.75L10,11.9V5.21L20,3M3,13L9,13.09V19.9L3,18.75V13M20,13.25V22L10,20.09V13.1L20,13.25Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="quick-cmds pane-scroll">
+          <div class="qsep">Install a client</div>
+          <div class="qrow" data-os-row="mac">
+            <div class="qline">
+              <code>brew install --cask hexchat</code>
+              <CopyButton value="brew install --cask hexchat" label="Copy macOS install command" />
+            </div>
+            <span class="qdesc">macOS: install HexChat</span>
+          </div>
+          <div class="qrow" data-os-row="linux" hidden>
+            <div class="qline">
+              <code>sudo apt update && sudo apt install -y hexchat</code>
+              <CopyButton value="sudo apt update && sudo apt install -y hexchat" label="Copy Linux install command" />
+            </div>
+            <span class="qdesc">Linux (Ubuntu/Debian): install HexChat</span>
+          </div>
+          <div class="qrow" data-os-row="windows" hidden>
+            <div class="qline">
+              <code>winget install --id HexChat.HexChat -e</code>
+              <CopyButton value="winget install --id HexChat.HexChat -e" label="Copy Windows install command" />
+            </div>
+            <span class="qdesc">Windows: install HexChat with winget</span>
+          </div>
+          <div class="qsep">Setup and join</div>
+          <div class="qrow">
+            <div class="qline">
+              <code>ircs://{site.host}:{site.tlsPort}</code>
+              <CopyButton value={`ircs://${site.host}:${site.tlsPort}`} label="Copy secure server address" />
+            </div>
+            <span class="qdesc">Paste as server/network address in your IRC client</span>
+          </div>
+          <div class="qrow">
+            <div class="qline">
+              <code>/server -tls {site.host} {site.tlsPort}</code>
+              <CopyButton value={`/server -tls ${site.host} ${site.tlsPort}`} label="Copy connect command" />
+            </div>
+            <span class="qdesc">If your client supports raw connect commands</span>
+          </div>
+          <div class="qrow">
+            <div class="qline">
+              <code>/nick arjun_new</code>
+              <CopyButton value="/nick arjun_new" label="Copy nick command" />
+            </div>
+            <span class="qdesc">Set your nickname</span>
+          </div>
+          <div class="qrow">
+            <div class="qline">
+              <code>/join {site.defaultChannel}</code>
+              <CopyButton value={`/join ${site.defaultChannel}`} label="Copy join command" />
+            </div>
+            <span class="qdesc">Join the main channel</span>
+          </div>
+          <div class="qrow">
+            <div class="qline">
+              <code>Hello, I am new here</code>
+              <CopyButton value="Hello, I am new here" label="Copy first message" />
+            </div>
+            <span class="qdesc">Send your first message</span>
+          </div>
+        </div>
+      </section>
 
-      <h2>get a client</h2>
-      <p style="color: var(--muted); margin: 0.5rem 0 0.75rem;">
-        Pick anything that speaks IRC.
-      </p>
-      <div class="box">
-        <dl>
-          <dt>desktop</dt><dd>HexChat, weechat, irssi, mIRC</dd>
-          <dt>terminal</dt><dd><code>weechat</code> or <code>irssi</code></dd>
-          <dt>mobile</dt><dd>Goguma (Android), Colloquy (iOS)</dd>
-        </dl>
+      <div class="chat-cell">
+        <ChatPreview />
       </div>
 
-      <h2>quick start (weechat)</h2>
-      <pre><code><span class="c"># add and connect</span>
-/server add inovus {server}/{portsTLS} -tls
-/connect inovus
+      <div class="commands-cell">
+        <CommandList />
+      </div>
 
-<span class="c"># register yourself once</span>
-/msg NickServ register &lt;password&gt; &lt;email&gt;
-
-<span class="c"># join</span>
-/join {channels[0]}</code></pre>
-
-      <h2>house rules</h2>
-      <p>Be kind. Stay on topic in topic channels. No spam. That's it.</p>
-
-      <footer>
-        <span>{server}</span>
-        <span><a href="https://inovuslabs.org">inovuslabs.org</a></span>
+      <footer class="footer-cell">
+        <span>TLS only: <code>{site.host}</code>:<code>{site.tlsPort}</code></span>
+        <span class="links">
+          <a href={site.parentUrl} rel="noopener">inovuslabs.org</a>
+          <a href={`ircs://${site.host}:${site.tlsPort}`} rel="external">ircs://{site.host}</a>
+        </span>
       </footer>
-    </main>
-  </body>
-</html>
+    </section>
+  </TerminalShell>
+</BaseLayout>
+
+<style>
+  /* Single viewport: fills terminal content; scrolling only inside panes (.quick-cmds, .chat, .cmds). */
+  .bento {
+    display: grid;
+    gap: 0.65rem;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "hero"
+      "quick"
+      "chat"
+      "commands"
+      "footer";
+    grid-template-rows: auto minmax(0, 1.2fr) minmax(0, 1.2fr) minmax(0, 1fr) auto;
+    align-content: stretch;
+    align-items: stretch;
+  }
+
+  .hero-cell {
+    grid-area: hero;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .quick-cell {
+    grid-area: quick;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-cell {
+    grid-area: chat;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .commands-cell {
+    grid-area: commands;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .footer-cell {
+    grid-area: footer;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  .hero-cell > :global(*),
+  .quick-cell > :global(*) { width: 100%; }
+  .chat-cell > :global(*),
+  .commands-cell > :global(*) {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .quick-head {
+    flex-shrink: 0;
+  }
+  .quick-cell .quick-cmds {
+    flex: 1;
+    min-height: 0;
+  }
+
+  @media (min-width: 900px) {
+    .bento {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      grid-template-areas:
+        "hero chat"
+        "quick chat"
+        "commands commands"
+        "footer footer";
+      grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr) auto;
+    }
+    /* chat spans hero + quick rows — same-named area merges */
+  }
+
+  @media (min-width: 1240px) {
+    .bento {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas:
+        "hero hero chat"
+        "quick commands chat"
+        "footer footer footer";
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Quick commands */
+  .quick-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    margin-bottom: 0.55rem;
+    min-width: 0;
+  }
+  .quick-head .section-tight {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 0;
+  }
+  .os-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    border: 1px solid var(--line-2);
+    background: #0b0f15;
+    border-radius: 4px;
+    padding: 2px;
+    gap: 2px;
+  }
+  .os-toggle:focus-within {
+    border-color: var(--accent);
+  }
+  .os-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.75rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    line-height: 0;
+  }
+  .os-toggle-btn:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .os-toggle-btn.is-active {
+    color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px rgba(121, 224, 137, 0.25);
+  }
+  .os-toggle-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .os-ico {
+    width: 1.1rem;
+    height: 1.1rem;
+    display: block;
+  }
+
+  .quick-cmds {
+    display: grid;
+    gap: 0;
+    align-content: start;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: #07090d;
+  }
+  .quick-cmds .qsep {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: #0b0f15;
+    padding: 0.38rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .quick-cmds .qrow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.42rem 0.62rem 0.42rem 0.75rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  /* [hidden] must win over display:flex above (same specificity beats UA [hidden]). */
+  .quick-cmds .qrow[hidden] {
+    display: none !important;
+  }
+  .quick-cmds .qrow:last-child { border-bottom: 0; }
+  .quick-cmds .qline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  .quick-cmds .qline code {
+    flex: 1;
+    min-width: 0;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid rgba(121, 224, 137, 0.2);
+    padding: 0.08rem 0.38rem;
+    border-radius: 3px;
+    font-size: 0.82rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+  .quick-cmds .qdesc { color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
+
+  footer {
+    margin-top: 0;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--inset);
+    color: var(--muted);
+    font-size: 0.76rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  footer code {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--line);
+    padding: 0 0.3rem;
+    border-radius: 3px;
+    font-size: 0.92em;
+  }
+  footer .links { display: inline-flex; gap: 0.85rem; flex-wrap: wrap; }
+</style>
+
+<script>
+  const btns = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-os]"));
+  const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-os-row]"));
+
+  const applyOs = (os: string) => {
+    for (const row of rows) {
+      row.hidden = row.getAttribute("data-os-row") !== os;
+    }
+    for (const btn of btns) {
+      const active = btn.dataset.os === os;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-checked", String(active));
+    }
+  };
+
+  for (const btn of btns) {
+    btn.addEventListener("click", () => applyOs(btn.dataset.os ?? "mac"));
+  }
+
+  applyOs("mac");
+</script>

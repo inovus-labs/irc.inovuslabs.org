@@ -1,0 +1,101 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `IRC @ Inovus Labs — Educational IRC Server (${site.host})`,
+  description = `Join the Inovus Labs educational IRC network at ${site.host}. Beginner-friendly setup, TLS on port ${site.tlsPort}, and essential IRC commands — built for learning real-time chat.`,
+} = Astro.props;
+
+const keywords = [
+  "IRC",
+  "Inovus Labs",
+  site.host,
+  "IRC server",
+  "IRC guide",
+  "learn IRC",
+  "IRC commands",
+  "HexChat",
+  "WeeChat",
+  "irssi",
+  "education",
+  "open source chat",
+].join(", ");
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${site.url}/#organization`,
+      name: site.parentName,
+      url: site.parentUrl,
+      sameAs: [site.parentUrl],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site.url}/#website`,
+      url: site.url,
+      name: "IRC @ Inovus Labs",
+      description,
+      publisher: { "@id": `${site.url}/#organization` },
+      inLanguage: "en",
+    },
+    {
+      "@type": "TechArticle",
+      headline: "Simple IRC Guide",
+      description,
+      author: { "@id": `${site.url}/#organization` },
+      publisher: { "@id": `${site.url}/#organization` },
+      mainEntityOfPage: site.url,
+      inLanguage: "en",
+      audience: { "@type": "EducationalAudience", educationalRole: "student" },
+      about: ["IRC", "Internet Relay Chat", "Real-time messaging"],
+    },
+  ],
+};
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<meta name="author" content={site.parentName} />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<meta name="googlebot" content="index, follow" />
+<link rel="canonical" href={site.url} />
+
+<meta name="theme-color" content="#0b0c0f" />
+<meta name="color-scheme" content="dark" />
+<meta name="application-name" content="IRC @ Inovus Labs" />
+<meta name="apple-mobile-web-app-title" content="IRC @ Inovus Labs" />
+<meta name="format-detection" content="telephone=no" />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="IRC @ Inovus Labs" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={site.url} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content={site.ogImage} />
+<meta property="og:image:alt" content="IRC @ Inovus Labs — educational IRC server" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={site.ogImage} />
+<meta name="twitter:image:alt" content="IRC @ Inovus Labs — educational IRC server" />
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline></script>
