@@ -38,8 +38,8 @@ Open `http://localhost:8081`.
 Run the `Publish container` workflow manually from GitHub Actions to publish a production image to GitHub Container Registry:
 
 ```text
-ghcr.io/<owner>/<repo>:latest
-ghcr.io/<owner>/<repo>:<commit-sha>
+ghcr.io/inovus-labs/irc.inovuslabs.org:latest
+ghcr.io/inovus-labs/irc.inovuslabs.org:<commit-sha>
 ```
 
 The workflow lives in `.github/workflows/container.yml`. In GitHub, make sure the package visibility allows the Oracle server to pull it. For a private package, log in on the server with a GitHub token that has `read:packages`.
@@ -61,10 +61,9 @@ On the Oracle server:
 ```sh
 cd /home/ubuntu
 
-git clone <repo-url> irc-web
+git clone https://github.com/inovus-labs/irc.inovuslabs.org.git irc-web
 cd irc-web
 
-export IRC_WEB_IMAGE=ghcr.io/<owner>/<repo>:latest
 docker compose pull
 docker compose up -d
 ```

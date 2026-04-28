@@ -1,6 +1,6 @@
 services:
   irc-web:
-    image: ${IRC_WEB_IMAGE:?Set IRC_WEB_IMAGE to ghcr.io/owner/repo:tag}
+    image: ghcr.io/inovus-labs/irc.inovuslabs.org:latest
     container_name: irc-web
     init: true
     restart: unless-stopped
