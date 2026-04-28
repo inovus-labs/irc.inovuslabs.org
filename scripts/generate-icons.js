@@ -3,14 +3,17 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync, mkdirSync } from 'fs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const sourceLogo = join(__dirname, 'logo.png');
-const outputDir = __dirname;
+const publicDir = join(__dirname, '../public');
+const brandingDir = join(publicDir, 'branding');
+const iconsDir = join(publicDir, 'icons');
+const sourceLogo = join(brandingDir, 'logo.png');
 
-if (!existsSync(outputDir)) {
-  mkdirSync(outputDir, { recursive: true });
+for (const dir of [brandingDir, iconsDir]) {
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
 }
 
 const faviconConfigs = [
@@ -27,7 +30,7 @@ const iconConfigs = [
 ];
 
 async function generateIcon(config, sourceImage = sourceLogo) {
-  const outputPath = join(outputDir, config.name);
+  const outputPath = join(iconsDir, config.name);
 
   try {
     let image = sharp(sourceImage);
@@ -61,7 +64,7 @@ async function generateIcon(config, sourceImage = sourceLogo) {
     }
 
     await image.png().toFile(outputPath);
-    const relativePath = outputPath.replace(outputDir, '').replace(/\\/g, '/');
+    const relativePath = outputPath.replace(publicDir, '').replace(/\\/g, '/');
     console.log(`✓ Generated ${relativePath}`);
   } catch (error) {
     console.error(`✗ Failed to generate ${config.name}:`, error.message);
@@ -69,7 +72,7 @@ async function generateIcon(config, sourceImage = sourceLogo) {
 }
 
 async function generateFaviconICO() {
-  const icoPath = join(outputDir, 'favicon.ico');
+  const icoPath = join(iconsDir, 'favicon.ico');
 
   try {
     await sharp(sourceLogo)
@@ -80,14 +83,14 @@ async function generateFaviconICO() {
       .png()
       .toFile(icoPath);
 
-    console.log(`✓ Generated favicon.ico`);
+    console.log(`✓ Generated /icons/favicon.ico`);
   } catch (error) {
     console.error(`✗ Failed to generate favicon.ico:`, error.message);
   }
 }
 
 async function generateFaviconSVG() {
-  const svgPath = join(outputDir, 'favicon.svg');
+  const svgPath = join(iconsDir, 'favicon.svg');
 
   try {
     const buffer = await sharp(sourceLogo)
@@ -107,21 +110,21 @@ async function generateFaviconSVG() {
 
     const fs = await import('fs/promises');
     await fs.writeFile(svgPath, svg, 'utf-8');
-    console.log(`✓ Generated favicon.svg`);
+    console.log(`✓ Generated /icons/favicon.svg`);
   } catch (error) {
     console.error(`✗ Failed to generate favicon.svg:`, error.message);
   }
 }
 
 async function main() {
-  console.log('🎨 Generating icons from logo.png...\n');
+  console.log('🎨 Generating icons from public/branding/logo.png...\n');
 
   if (!existsSync(sourceLogo)) {
     console.error(`✗ Source logo not found: ${sourceLogo}`);
     process.exit(1);
   }
 
-  console.log('📌 Favicons and app icons\n');
+  console.log('📌 Favicons and app icons → public/icons/\n');
   for (const config of faviconConfigs) {
     await generateIcon(config);
   }

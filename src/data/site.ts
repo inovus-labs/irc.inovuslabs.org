@@ -4,7 +4,7 @@ export const site = {
   tlsPort: "6697",
   defaultChannel: "#lobby",
   url: "https://irc.inovuslabs.org",
-  ogImage: "https://irc.inovuslabs.org/og.png",
+  ogImage: "https://irc.inovuslabs.org/branding/og-image.png",
   parentUrl: "https://inovuslabs.org",
   parentName: "Inovus Labs",
 } as const;
