@@ -33,6 +33,17 @@ docker run --rm -p 8081:80 irc-web
 
 Open `http://localhost:8081`.
 
+## GHCR Image
+
+Run the `Publish container` workflow manually from GitHub Actions to publish a production image to GitHub Container Registry:
+
+```text
+ghcr.io/<owner>/<repo>:latest
+ghcr.io/<owner>/<repo>:<commit-sha>
+```
+
+The workflow lives in `.github/workflows/container.yml`. In GitHub, make sure the package visibility allows the Oracle server to pull it. For a private package, log in on the server with a GitHub token that has `read:packages`.
+
 ## Oracle Deployment
 
 Recommended deployment shape:
@@ -53,7 +64,15 @@ cd /home/ubuntu
 git clone <repo-url> irc-web
 cd irc-web
 
-docker compose -f docker-compose.web.yml up -d --build
+export IRC_WEB_IMAGE=ghcr.io/<owner>/<repo>:latest
+docker compose pull
+docker compose up -d
+```
+
+For a private GHCR package:
+
+```sh
+echo '<github-token-with-read-packages>' | docker login ghcr.io -u <github-username> --password-stdin
 ```
 
 This exposes the webpage only on the host loopback interface:
