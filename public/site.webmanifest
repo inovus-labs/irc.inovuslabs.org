@@ -1,7 +1,7 @@
 {
   "name": "IRC — Inovus Labs",
   "short_name": "IRC @ IL",
-  "description": "Educational IRC server at irc.inovuslabs.org",
+  "description": "IRC server — explore Internet Relay Chat at irc.inovuslabs.org.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#07080b",

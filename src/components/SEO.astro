@@ -7,22 +7,19 @@ interface Props {
 }
 
 const {
-  title = `IRC @ Inovus Labs — Educational IRC Server (${site.host})`,
-  description = `Join the Inovus Labs educational IRC network at ${site.host}. Beginner-friendly setup, port ${site.tlsPort}, and essential IRC commands — built for learning real-time chat.`,
+  title = `IRC @ Inovus Labs (${site.host})`,
+  description = `IRC server at ${site.host}:${site.tlsPort} (TLS) — learn and explore classic Internet Relay Chat at your own pace.`,
 } = Astro.props;
 
 const keywords = [
   "IRC",
+  "Internet Relay Chat",
   "Inovus Labs",
   site.host,
   "IRC server",
-  "IRC guide",
-  "learn IRC",
   "IRC commands",
   "WeeChat",
   "irssi",
-  "education",
-  "open source chat",
 ].join(", ");
 
 const jsonLd = {
@@ -47,14 +44,13 @@ const jsonLd = {
     },
     {
       "@type": "TechArticle",
-      headline: "Simple IRC Guide",
+      headline: "IRC landing",
       description,
       author: { "@id": `${site.url}/#organization` },
       publisher: { "@id": `${site.url}/#organization` },
       mainEntityOfPage: site.url,
       inLanguage: "en",
-      audience: { "@type": "EducationalAudience", educationalRole: "student" },
-      about: ["IRC", "Internet Relay Chat", "Real-time messaging"],
+      about: ["IRC", "Internet Relay Chat", "classic real-time messaging"],
     },
   ],
 };
@@ -92,7 +88,7 @@ const jsonLd = {
 <meta property="og:url" content={site.url} />
 <meta property="og:locale" content="en_US" />
 <meta property="og:image" content={site.ogImage} />
-<meta property="og:image:alt" content="IRC @ Inovus Labs — educational IRC server" />
+<meta property="og:image:alt" content={`IRC @ Inovus Labs — Internet Relay Chat (${site.host})`} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 
@@ -100,6 +96,6 @@ const jsonLd = {
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={site.ogImage} />
-<meta name="twitter:image:alt" content="IRC @ Inovus Labs — educational IRC server" />
+<meta name="twitter:image:alt" content={`IRC @ Inovus Labs — Internet Relay Chat (${site.host})`} />
 
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline></script>
