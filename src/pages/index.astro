@@ -32,7 +32,7 @@ const row =
           <div
             class="inline-flex gap-0.5 rounded border border-[color:var(--line-2)] bg-[#0b0f15] p-0.5 focus-within:border-[color:var(--accent)]"
             role="radiogroup"
-            aria-label="Operating system for install command"
+            aria-label="Operating system for WeeChat launch instructions"
           >
             <button
               type="button"
@@ -41,7 +41,7 @@ const row =
               aria-checked="true"
               data-os="mac"
               title="macOS"
-              aria-label="macOS install command"
+              aria-label="macOS WeeChat commands"
             >
               <svg class="h-[1.1rem] w-[1.1rem] shrink-0" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path
@@ -57,7 +57,7 @@ const row =
               aria-checked="false"
               data-os="linux"
               title="Linux"
-              aria-label="Linux install command"
+              aria-label="Linux WeeChat commands"
             >
               <svg class="h-[1.1rem] w-[1.1rem] shrink-0" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path
@@ -73,7 +73,7 @@ const row =
               aria-checked="false"
               data-os="windows"
               title="Windows"
-              aria-label="Windows install command"
+              aria-label="Windows WeeChat commands"
             >
               <svg class="h-[1.1rem] w-[1.1rem] shrink-0" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path
@@ -90,56 +90,67 @@ const row =
             "lg:min-h-0 lg:flex-1 lg:self-stretch",
           ]}
         >
-          <div class={`${sep}`}>Install a client</div>
+          <div class={`${sep}`}>Launch WeeChat</div>
           <div class={`${row} qrow flex`} data-os-row="mac">
-            <div class="flex min-w-0 items-start justify-between gap-3">
-              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">brew install --cask hexchat</code>
-              <CopyButton value="brew install --cask hexchat" label="Copy macOS install command" />
+            <div class="flex w-full min-w-0 flex-col gap-2">
+              <div class="flex min-w-0 items-start justify-between gap-3">
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">brew install weechat</code>
+                <CopyButton value="brew install weechat" label="Copy Homebrew install command" />
+              </div>
+              <div class="flex min-w-0 items-start justify-between gap-3">
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">weechat</code>
+                <CopyButton value="weechat" label="Copy WeeChat launch command" />
+              </div>
             </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">macOS: install HexChat</span>
+            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">macOS: install, then run <code class="text-[0.8em] text-[color:var(--muted-2)]">weechat</code> in Terminal.</span>
           </div>
           <div class={`${row} qrow flex`} data-os-row="linux" hidden>
-            <div class="flex min-w-0 items-start justify-between gap-3">
-              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">sudo apt update && sudo apt install -y hexchat</code>
-              <CopyButton value="sudo apt update && sudo apt install -y hexchat" label="Copy Linux install command" />
+            <div class="flex w-full min-w-0 flex-col gap-2">
+              <div class="flex min-w-0 items-start justify-between gap-3">
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">sudo apt install weechat</code>
+                <CopyButton value="sudo apt install weechat" label="Copy apt install command" />
+              </div>
+              <div class="flex min-w-0 items-start justify-between gap-3">
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">weechat</code>
+                <CopyButton value="weechat" label="Copy WeeChat launch command" />
+              </div>
             </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Linux (Ubuntu/Debian): install HexChat</span>
+            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Linux: install (Debian/Ubuntu), then run <code class="text-[0.8em] text-[color:var(--muted-2)]">weechat</code> in a terminal.</span>
           </div>
           <div class={`${row} qrow flex`} data-os-row="windows" hidden>
-            <div class="flex min-w-0 items-start justify-between gap-3">
-              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">winget install --id HexChat.HexChat -e</code>
-              <CopyButton value="winget install --id HexChat.HexChat -e" label="Copy Windows install command" />
+            <div class="flex w-full min-w-0 flex-col gap-2">
+              <div class="flex min-w-0 items-start justify-between gap-3">
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">choco install weechat -y</code>
+                <CopyButton value="choco install weechat -y" label="Copy Chocolatey install command" />
+              </div>
+              <div class="flex min-w-0 items-start justify-between gap-3">
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">weechat</code>
+                <CopyButton value="weechat" label="Copy WeeChat launch command" />
+              </div>
             </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Windows: install HexChat with winget</span>
+            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Windows: install with Chocolatey, then run <code class="text-[0.8em] text-[color:var(--muted-2)]">weechat</code> (e.g. in WSL or on PATH).</span>
           </div>
-          <div class={`${sep}`}>Setup and join</div>
+          <div class={`${sep}`}>Connect in WeeChat</div>
           <div class={`${row} qrow flex`}>
             <div class="flex min-w-0 items-start justify-between gap-3">
-              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">ircs://{site.host}:{site.tlsPort}</code>
-              <CopyButton value={`ircs://${site.host}:${site.tlsPort}`} label="Copy server URI" />
+              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">/server add inovus {site.host}/{site.tlsPort} -ssl -nicks=yourname</code>
+              <CopyButton value={`/server add inovus ${site.host}/${site.tlsPort} -ssl -nicks=yourname`} label="Copy WeeChat server add command" />
             </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Paste as server/network address in your IRC client</span>
+            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">TLS only — port {site.tlsPort}. Replace <code class="text-[0.8em] text-[color:var(--muted-2)]">yourname</code> with your nick</span>
           </div>
           <div class={`${row} qrow flex`}>
             <div class="flex min-w-0 items-start justify-between gap-3">
-              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">/server -tls {site.host} {site.tlsPort}</code>
-              <CopyButton value={`/server -tls ${site.host} ${site.tlsPort}`} label="Copy connect command" />
+              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">/connect inovus</code>
+              <CopyButton value="/connect inovus" label="Copy WeeChat connect command" />
             </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">If your client supports raw connect commands</span>
-          </div>
-          <div class={`${row} qrow flex`}>
-            <div class="flex min-w-0 items-start justify-between gap-3">
-              <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">/nick decoded_cipher</code>
-              <CopyButton value="/nick decoded_cipher" label="Copy nick command" />
-            </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Set your nickname</span>
+            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Connect to the saved server</span>
           </div>
           <div class={`${row} qrow flex`}>
             <div class="flex min-w-0 items-start justify-between gap-3">
               <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">/join {site.defaultChannel}</code>
               <CopyButton value={`/join ${site.defaultChannel}`} label="Copy join command" />
             </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Join the main channel</span>
+            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Join the lobby</span>
           </div>
           <div class={`${row} qrow flex`}>
             <div class="flex min-w-0 items-start justify-between gap-3">
