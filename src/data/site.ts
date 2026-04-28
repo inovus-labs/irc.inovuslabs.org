@@ -27,12 +27,6 @@ export const members: Member[] = [
 ];
 
 export const commands = [
-  {
-    cmd: `/server add inovus ${site.host}/${site.tlsPort} -ssl -nicks=yourname`,
-    desc: "Register TLS network in WeeChat (IRC over TLS · change yourname)",
-  },
-  { cmd: "/connect inovus", desc: "Connect using the saved server name" },
-  { cmd: `/join ${site.defaultChannel}`, desc: "Join the lobby channel" },
   { cmd: `/nick ${youNick}`, desc: "Change your visible name (nickname)" },
   { cmd: "/part #channel", desc: "Leave the current channel window" },
   { cmd: "/msg amith hey there", desc: "Send a private one-to-one message" },
