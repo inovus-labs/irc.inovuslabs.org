@@ -39,7 +39,6 @@ Run the `Publish container` workflow manually from GitHub Actions to publish a p
 
 ```text
 ghcr.io/inovus-labs/irc.inovuslabs.org:latest
-ghcr.io/inovus-labs/irc.inovuslabs.org:<commit-sha>
 ```
 
 The workflow lives in `.github/workflows/container.yml`. In GitHub, make sure the package visibility allows the Oracle server to pull it. For a private package, log in on the server with a GitHub token that has `read:packages`.
