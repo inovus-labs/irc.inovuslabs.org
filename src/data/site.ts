@@ -83,6 +83,53 @@ export const chatScript: ChatLine[] = [
   { type: "msg", who: "nikhil", text: "if something's misbehaving (this room, site, kiosk) say so — we only fix what we hear about", ts: "14:04", group: "c" },
   { type: "msg", who: "arjun", text: `got it — I'll stay in ${site.defaultChannel} for a bit`, ts: "14:04", group: "d" },
   { type: "action", who: "amith", text: "waves", ts: "14:04", group: "e" },
+  { type: "msg", who: "sane", text: "if you drop, reconnect to the same host — your client usually remembers the channel list", ts: "14:05", group: "f" },
+  { type: "msg", who: "nikhil", text: "I'm on WeeChat here; anything with TLS + server password field works for this setup", ts: "14:05", group: "f" },
+  {
+    type: "msg",
+    who: "amith",
+    text: "worst bug is forgetting to `/join` and wondering why nobody answers",
+    ts: "14:05",
+    group: "f",
+  },
+  {
+    type: "msg",
+    who: "arjun",
+    text: "reasonable — anything I should avoid pasting here vs DMs?",
+    ts: "14:06",
+    group: "g",
+  },
+  {
+    type: "msg",
+    who: "sane",
+    text: "public channel paste: snippets and logs OK; secrets and keys belong in `/msg` or elsewhere",
+    ts: "14:06",
+    group: "g",
+  },
+  { type: "msg", who: "nikhil", text: "Pastebin links > walls of XML in channel — saves scrollback for humans", ts: "14:06", group: "g" },
+  { type: "action", who: "sane", text: "nods", ts: "14:07", group: "h" },
+  {
+    type: "msg",
+    who: "amith",
+    text: "when you're done testing, `/quit bye` beats yanking wifi — netsplit theatre is noisy",
+    ts: "14:07",
+    group: "h",
+  },
+  {
+    type: "msg",
+    who: "nikhil",
+    text: "topic bar is pinned at the top in most GUIs · same Thu 7pm note you saw on join",
+    ts: "14:07",
+    group: "h",
+  },
+  {
+    type: "msg",
+    who: "arjun",
+    text: "perfect — I'll lurk unless something breaks · thanks all",
+    ts: "14:08",
+    group: "i",
+  },
+  { type: "action", who: "amith", text: "salutes", ts: "14:08", group: "i" },
 ];
 
 export function colorFor(nick: string): MemberColor {

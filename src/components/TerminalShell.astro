@@ -12,37 +12,27 @@ const onlineCount = members.length;
     "lg:mx-auto lg:h-[calc(100dvh-2_*_clamp(0.5rem,2.5vw,2.25rem))] lg:min-h-0 lg:overflow-hidden",
   ]}
 >
-  <div
-    aria-hidden="true"
-    class="terminal-head flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2"
-  >
-    <span class="inline-flex gap-[0.35rem]">
-      <span class="traffic traffic-close h-[11px] w-[11px] rounded-full" aria-hidden="true"></span>
-      <span class="traffic traffic-min h-[11px] w-[11px] rounded-full" aria-hidden="true"></span>
-      <span class="traffic traffic-max h-[11px] w-[11px] rounded-full" aria-hidden="true"></span>
+  <div aria-hidden="true" class="terminal-head">
+    <span class="terminal-traffic">
+      <span class="traffic traffic-close" aria-hidden="true"></span>
+      <span class="traffic traffic-min" aria-hidden="true"></span>
+      <span class="traffic traffic-max" aria-hidden="true"></span>
     </span>
-    <span class="terminal-who ml-1 text-[0.78rem]">
+    <span class="terminal-who">
       <strong>{youNick}</strong>@{site.network}
-      —
-      {site.host}
+      <span class="terminal-who-sep" aria-hidden="true">—</span>
+      <span class="terminal-who-host">{site.host}</span>
     </span>
-    <span
-      class="terminal-badge ml-auto inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[0.72rem]"
-      title={`${onlineCount} users online`}
-    >
-      <span class="status-ping h-[7px] w-[7px] rounded-full" aria-hidden="true"></span>
-      <span>{onlineCount} online</span>
+    <span class="terminal-badge" title={`${onlineCount} users online`}>
+      <span class="status-ping" aria-hidden="true"></span>
+      <span class="terminal-badge-text">{onlineCount} online</span>
     </span>
   </div>
 
-  <div
-    class="terminal-prompt flex items-center gap-2 px-4 py-2 text-[0.82rem] max-lg:flex-wrap max-lg:break-all"
-  >
-    <span class="terminal-prompt-bar shrink-0">irc@inovuslabs:~$</span>
+  <div class="terminal-prompt">
+    <span class="terminal-prompt-bar">irc@inovuslabs:~$</span>
     <span>welcome to the {site.network} irc network</span>
-    <span
-      class="caret-inline inline-block h-[1em] w-2 shrink-0 motion-safe:animate-[caretBlink_1.05s_steps(1,end)_infinite]"
-      aria-hidden="true"></span>
+    <span class="caret-inline" aria-hidden="true"></span>
   </div>
 
   <div class="terminal-content flex min-h-0 flex-1 flex-col p-[clamp(0.8rem,1.6vw,1.15rem)] max-lg:flex-none lg:min-h-0 lg:overflow-hidden">
@@ -51,19 +41,20 @@ const onlineCount = members.length;
 </main>
 
 <style>
-  /* Shell surfaces — use CSS variables so colors always match theme tokens */
+  /* Outer frame: same panel on all breakpoints; mobile was missing border/gradient and looked broken */
   .terminal-shell {
-    border: none;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid var(--line-2);
+    background: linear-gradient(to bottom, var(--panel), var(--panel-2));
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 18px 44px -22px rgba(0, 0, 0, 0.65),
+      0 0 40px -18px rgba(121, 224, 137, 0.06);
   }
 
   @media (width >= 1024px) {
     .terminal-shell {
-      border-radius: 10px;
-      border: 1px solid var(--line-2);
-      background: linear-gradient(to bottom, var(--panel), var(--panel-2));
       box-shadow:
         inset 0 0 0 1px rgba(255, 255, 255, 0.03),
         0 30px 80px -30px rgba(0, 0, 0, 0.7),
@@ -71,21 +62,54 @@ const onlineCount = members.length;
     }
   }
 
+  /* Title bar: grid keeps traffic / identity / badge aligned; host line wraps cleanly on narrow viewports */
   .terminal-head {
     flex-shrink: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(0.4rem, 2.2vw, 0.75rem);
+    padding: clamp(0.45rem, 2.2vw, 0.65rem) clamp(0.6rem, 3vw, 0.9rem);
     border-bottom: 1px solid var(--line);
     background: linear-gradient(180deg, #14181f 0%, #0e1218 100%);
   }
-
-  @media (width >= 1024px) {
+  @media (max-width: 480px) {
     .terminal-head {
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      row-gap: 0.4rem;
+    }
+
+    .terminal-traffic {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .terminal-badge {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }
+
+    .terminal-who {
+      grid-column: 1 / -1;
+      grid-row: 2;
     }
   }
 
+  .terminal-traffic {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
   .traffic {
+    display: block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
   }
   .traffic-close {
     background: #f4736a;
@@ -98,23 +122,49 @@ const onlineCount = members.length;
   }
 
   .terminal-who {
+    min-width: 0;
+    font-size: clamp(0.7rem, 2.8vw, 0.78rem);
+    line-height: 1.4;
     color: var(--muted);
+    word-break: break-word;
   }
   .terminal-who strong {
     font-weight: 600;
     color: var(--text-strong);
   }
+  .terminal-who-sep {
+    margin: 0 0.2em;
+    white-space: nowrap;
+  }
+  .terminal-who-host {
+    display: inline;
+  }
 
   .terminal-badge {
-    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    padding: 0.28rem 0.45rem;
+    border-radius: 999px;
     border: 1px solid var(--line);
     background: rgba(121, 224, 137, 0.06);
+    color: var(--muted);
+    font-size: clamp(0.66rem, 2.4vw, 0.72rem);
+    line-height: 1.2;
+    white-space: nowrap;
   }
-  .terminal-badge > span:last-child {
+  .terminal-badge-text {
     color: var(--text);
   }
 
   .status-ping {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
     background: var(--accent);
     box-shadow: 0 0 0 0 var(--accent-glow);
   }
@@ -123,16 +173,35 @@ const onlineCount = members.length;
     border-bottom: 1px solid var(--line);
     background: var(--inset);
     color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    word-break: break-word;
+    padding: clamp(0.45rem, 2vw, 0.55rem) clamp(0.75rem, 3vw, 1rem);
+    font-size: clamp(0.76rem, 2.6vw, 0.82rem);
   }
 
   .terminal-prompt-bar {
     color: var(--accent);
     font-weight: 500;
+    flex-shrink: 0;
   }
 
   .caret-inline {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    flex-shrink: 0;
     background: var(--accent);
     vertical-align: -2px;
+    animation: caretBlink 1.05s steps(1, end) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .caret-inline {
+      animation: none;
+    }
   }
 
   @supports (prefers-reduced-motion: no-preference) {

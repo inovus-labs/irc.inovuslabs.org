@@ -12,7 +12,8 @@ function typingAs(line: ChatLine): string {
 ---
 <section
   class:list={[
-    "chat-card card !p-0 flex w-full min-h-0 flex-col overflow-visible lg:h-full lg:min-h-0 lg:overflow-hidden",
+    "chat-card card !p-0 flex w-full min-h-0 flex-col overflow-hidden lg:h-full lg:min-h-0",
+    "max-lg:max-h-[min(28rem,58dvh)]",
   ]}
   aria-label={`Sample chat in ${site.defaultChannel}`}
 >
@@ -28,8 +29,7 @@ function typingAs(line: ChatLine): string {
 
   <div
     class:list={[
-      "chat flex flex-1 flex-col overflow-visible bg-[#07090d] px-2.5 py-2 text-[0.8rem] leading-normal",
-      "max-lg:overflow-visible max-lg:min-h-0 lg:min-h-0 lg:flex-1 lg:overflow-x-hidden lg:overflow-y-auto",
+      "chat flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto bg-[#07090d] px-2.5 pb-[clamp(1.85rem,5.5vmin,3rem)] pt-2 text-[0.8rem] leading-normal",
     ]}
     data-typing-ms="1550"
     data-after-msg-ms="400"
@@ -140,6 +140,11 @@ function typingAs(line: ChatLine): string {
 </section>
 
 <style>
+  /* Inner transcript scroll — mobile capped height + momentum on iOS */
+  .chat {
+    -webkit-overflow-scrolling: touch;
+  }
+
   .chat .row[hidden],
   .typing-row[hidden] {
     display: none !important;
@@ -266,9 +271,24 @@ function typingAs(line: ChatLine): string {
     if (nameEl) nameEl.textContent = raw;
   }
 
-  function scrollIfOverflow() {
-    if (!chat || chat.scrollHeight <= chat.clientHeight + 2) return;
-    chat.scrollTop = chat.scrollHeight;
+  /** Keeps newest content in view: inner scroll on desktop; scrollIntoView on mobile (includes typing row). */
+  function scrollToLatest() {
+    if (!chat) return;
+    requestAnimationFrame(() => {
+      if (chat!.scrollHeight > chat!.clientHeight + 2) {
+        chat!.scrollTop = chat!.scrollHeight;
+      } else {
+        let anchor: HTMLElement | undefined;
+        if (typingRow && !typingRow.hidden) anchor = typingRow;
+        else anchor = [...chat!.querySelectorAll<HTMLElement>(".chat-line:not([hidden])")].at(-1);
+        anchor?.scrollIntoView({ block: "end", behavior: "auto" });
+      }
+      requestAnimationFrame(() => {
+        if (chat!.scrollHeight > chat!.clientHeight + 2) {
+          chat!.scrollTop = chat!.scrollHeight;
+        }
+      });
+    });
   }
 
   function splitRevealBatches(nodes: HTMLElement[]): HTMLElement[][] {
@@ -298,7 +318,7 @@ function typingAs(line: ChatLine): string {
         const label = batch[0].dataset.typingAs ?? "···";
         setTypingLabel(label);
         typingRow.hidden = false;
-        scrollIfOverflow();
+        scrollToLatest();
         await sleep(typingMs);
         typingRow.hidden = true;
         for (const row of batch) {
@@ -307,7 +327,7 @@ function typingAs(line: ChatLine): string {
           void row.offsetWidth;
           row.classList.add("is-revealed");
         }
-        scrollIfOverflow();
+        scrollToLatest();
         await sleep(afterMsgMs);
       }
       await sleep(betweenLoopsMs);
@@ -324,6 +344,7 @@ function typingAs(line: ChatLine): string {
         row.hidden = false;
       }
       if (typingRow) typingRow.hidden = true;
+      scrollToLatest();
     } else {
       void runSequence();
     }
