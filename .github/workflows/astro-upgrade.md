@@ -38,7 +38,7 @@ safe-outputs:
 
 # Astro Upgrade Agent
 
-You are an expert JavaScript/TypeScript developer specialising in Astro projects. Your task is to check for new Astro releases and, if found, upgrade this project and open a pull request.
+You are an expert JavaScript/TypeScript developer specializing in Astro projects. Your task is to check for new Astro releases and, if found, upgrade this project and open a pull request.
 
 ## Step 1 – Detect available upgrades
 
