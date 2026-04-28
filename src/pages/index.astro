@@ -1,0 +1,143 @@
+---
+const network = "inovuslabs";
+const server = "irc.inovuslabs.org";
+const portsPlain = "6667";
+const portsTLS = "6697";
+const channels = ["#lobby", "#dev", "#random"];
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{network} IRC</title>
+    <meta name="description" content={`Join the ${network} IRC network at ${server}`} />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0c0d10;
+        --fg: #d8d6cf;
+        --muted: #8a8880;
+        --accent: #5dcaa5;
+        --line: #1f2127;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: var(--bg); color: var(--fg); }
+      body {
+        font: 15px/1.6 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem 1.25rem;
+      }
+      main { max-width: 640px; width: 100%; }
+      h1 {
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 500;
+        margin: 0 0 0.25em;
+        letter-spacing: -0.02em;
+      }
+      h1 .net { color: var(--accent); }
+      .tag { color: var(--muted); margin: 0 0 2.5rem; font-size: 0.95em; }
+      h2 {
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin: 2rem 0 0.75rem;
+      }
+      .box {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 1rem 1.25rem;
+        margin: 0;
+      }
+      .box dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 1.25rem; }
+      .box dt { color: var(--muted); }
+      .box dd { margin: 0; }
+      .box code { color: var(--accent); }
+      ul.chans { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+      ul.chans li {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.25rem 0.85rem;
+        font-size: 0.9em;
+      }
+      pre {
+        background: #07080a;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 0.9rem 1rem;
+        overflow-x: auto;
+        margin: 0;
+        font-size: 0.85em;
+      }
+      pre .c { color: var(--muted); }
+      footer {
+        margin-top: 3rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.85em;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1><span class="net">{network}</span> irc</h1>
+      <p class="tag">A small IRC network for the inovuslabs community.</p>
+
+      <h2>connection</h2>
+      <div class="box">
+        <dl>
+          <dt>server</dt><dd><code>{server}</code></dd>
+          <dt>tls</dt><dd><code>{portsTLS}</code></dd>
+          <dt>plain</dt><dd><code>{portsPlain}</code></dd>
+          <dt>network</dt><dd><code>{network}</code></dd>
+        </dl>
+      </div>
+
+      <h2>channels</h2>
+      <ul class="chans">
+        {channels.map((c) => <li><code>{c}</code></li>)}
+      </ul>
+
+      <h2>get a client</h2>
+      <p style="color: var(--muted); margin: 0.5rem 0 0.75rem;">
+        Pick anything that speaks IRC.
+      </p>
+      <div class="box">
+        <dl>
+          <dt>desktop</dt><dd>HexChat, weechat, irssi, mIRC</dd>
+          <dt>terminal</dt><dd><code>weechat</code> or <code>irssi</code></dd>
+          <dt>mobile</dt><dd>Goguma (Android), Colloquy (iOS)</dd>
+        </dl>
+      </div>
+
+      <h2>quick start (weechat)</h2>
+      <pre><code><span class="c"># add and connect</span>
+/server add inovus {server}/{portsTLS} -tls
+/connect inovus
+
+<span class="c"># register yourself once</span>
+/msg NickServ register &lt;password&gt; &lt;email&gt;
+
+<span class="c"># join</span>
+/join {channels[0]}</code></pre>
+
+      <h2>house rules</h2>
+      <p>Be kind. Stay on topic in topic channels. No spam. That's it.</p>
+
+      <footer>
+        <span>{server}</span>
+        <span><a href="https://inovuslabs.org">inovuslabs.org</a></span>
+      </footer>
+    </main>
+  </body>
+</html>
