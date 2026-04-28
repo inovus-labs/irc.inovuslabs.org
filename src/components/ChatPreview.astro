@@ -10,15 +10,27 @@ function typingAs(line: ChatLine): string {
   return line.who;
 }
 ---
-<section class="card chat-card" aria-label={`Sample chat in ${site.defaultChannel}`}>
-  <div class="chan-bar">
-    <span class="chan-name"><span class="hash">#</span>lobby</span>
-    <span class="chan-meta">{userCount} users</span>
-    <span class="chan-meta dim">topic: #lobby · Thu 7pm · kiosk</span>
+<section
+  class:list={[
+    "chat-card card !p-0 flex w-full min-h-0 flex-col overflow-visible lg:h-full lg:min-h-0 lg:overflow-hidden",
+  ]}
+  aria-label={`Sample chat in ${site.defaultChannel}`}
+>
+  <div
+    class:list={[
+      "chan-bar flex shrink-0 flex-wrap items-center gap-[0.7rem] border-b border-[color:var(--line)] bg-[linear-gradient(180deg,#10141a_0%,#0c0f14_100%)] px-[0.7rem] py-[0.45rem] text-[0.76rem]",
+    ]}
+  >
+    <span class="font-medium text-[color:var(--text-strong)]"><span class="mr-px text-[color:var(--accent)]">#</span>lobby</span>
+    <span class="text-[0.78rem] text-[color:var(--muted)]">{userCount} users</span>
+    <span class="text-[0.78rem] text-[color:var(--muted-2)]">topic: #lobby · Thu 7pm · kiosk</span>
   </div>
 
   <div
-    class="chat"
+    class:list={[
+      "chat flex flex-1 flex-col overflow-visible bg-[#07090d] px-2.5 py-2 text-[0.8rem] leading-normal",
+      "max-lg:overflow-visible max-lg:min-h-0 lg:min-h-0 lg:flex-1 lg:overflow-x-hidden lg:overflow-y-auto",
+    ]}
     data-typing-ms="1550"
     data-after-msg-ms="400"
     data-between-loops-ms="2800"
@@ -128,44 +140,10 @@ function typingAs(line: ChatLine): string {
 </section>
 
 <style>
-  .chat-card {
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .chan-bar {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.45rem 0.7rem;
-    border-bottom: 1px solid var(--line);
-    background: linear-gradient(180deg, #10141a 0%, #0c0f14 100%);
-    font-size: 0.76rem;
-    flex-wrap: wrap;
-  }
-  .chan-name { color: var(--text-strong); font-weight: 500; }
-  .chan-name .hash { color: var(--accent); margin-right: 1px; }
-  .chan-meta { color: var(--muted); font-size: 0.78rem; }
-  .chan-meta.dim { color: var(--muted-2); }
-
-  .chat {
-    flex: 1;
-    min-height: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    background: #07090d;
-    padding: 0.45rem 0.6rem;
-    font-size: 0.8rem;
-    line-height: 1.5;
-  }
-
   .chat .row[hidden],
+  .typing-row[hidden] {
+    display: none !important;
+  }
   .typing-row[hidden] {
     display: none !important;
   }

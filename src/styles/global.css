@@ -1,77 +1,13 @@
-:root {
-  color-scheme: dark only;
-  --bg: #07080b;
-  --bg-soft: #0b0d12;
-  --panel: #0e1117;
-  --panel-2: #11151c;
-  --inset: #090b10;
-  --text: #dde3d6;
-  --text-strong: #f1f5ec;
-  --muted: #7e8a78;
-  --muted-2: #5a6457;
-  --line: #1f2520;
-  --line-2: #2a312a;
-  --accent: #79e089;
-  --accent-soft: rgba(121, 224, 137, 0.12);
-  --accent-glow: rgba(121, 224, 137, 0.35);
-  --warn: #f4cf7d;
-  --warn-bg: #1a1710;
-  --warn-line: #594d2c;
-  --u1: #7dc4f4;
-  --u2: #e879b1;
-  --u3: #b58cf4;
-  --u4: #f4a87d;
-  --u5: #79e089;
-  --u6: #f4d97d;
-}
+@import "tailwindcss";
 
-* { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
-html { background: var(--bg); overflow: hidden; height: 100%; }
-
-body {
-  background:
-    radial-gradient(1200px 600px at 20% -10%, rgba(121, 224, 137, 0.08), transparent 60%),
-    radial-gradient(900px 500px at 100% 100%, rgba(125, 196, 244, 0.06), transparent 60%),
-    var(--bg);
-  color: var(--text);
-  font: 15px/1.7 ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  min-height: 100dvh;
-  height: 100dvh;
-  padding: clamp(0.5rem, 2.5vw, 2.25rem);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
-}
-
-@media (min-width: 1024px) {
-  body { font-size: 15.5px; }
-}
-
-a {
-  color: var(--accent);
-  text-decoration: none;
-  border-bottom: 1px dashed transparent;
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-a:hover, a:focus-visible {
-  border-bottom-color: var(--accent);
-  outline: none;
-}
-a:focus-visible { color: var(--text-strong); }
-
-.skip {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-}
-.skip:focus {
-  left: 1rem;
-  top: 1rem;
-  background: var(--panel);
-  border: 1px solid var(--accent);
-  padding: 0.4rem 0.7rem;
-  z-index: 10;
+@layer base {
+  /* Preflight applies a monospace stack to code; keep one consistent UI monospace from body */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: inherit;
+  }
 }
 
 .card {
@@ -88,59 +24,102 @@ h2.section {
   text-transform: uppercase;
   color: var(--muted);
 }
-h2.section .num { color: var(--accent); margin-right: 0.35rem; }
 
-.grid-2 {
-  display: grid;
-  gap: 0.85rem;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 680px) {
-  .grid-2 { grid-template-columns: 1fr 1fr; }
+h2.section .num {
+  color: var(--accent);
+  margin-right: 0.35rem;
 }
 
-.grid-2-wide {
-  display: grid;
-  gap: 0.85rem;
-  grid-template-columns: 1fr;
-  align-items: start;
-}
-@media (min-width: 960px) {
-  .grid-2-wide { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
-}
+:root {
+  color-scheme: dark only;
+  --bg: #07080b;
+  --bg-soft: #0b0d12;
+  --panel: #0e1117;
+  --panel-2: #11151c;
+  --inset: #090b10;
+  --text: #dde3d6;
+  --text-strong: #f1f5ec;
+  --muted: #7e8a78;
+  --muted-2: #5a6457;
+  --line: #1f2520;
+  --line-2: #2a312a;
+  --accent: #79e089;
+  --accent-soft: rgba(121, 224, 137, 0.12);
+  --accent-glow: rgba(121, 224, 137, 0.35);
 
-::selection { background: var(--accent-soft); color: var(--text-strong); }
-
-/* Thin, low-profile scrollbars (use .pane-scroll on overflow panes — 01 · 03). */
-.pane-scroll {
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(58, 66, 57, 0.85) rgba(0, 0, 0, 0.2);
-}
-
-.pane-scroll::-webkit-scrollbar {
-  width: 4px;
-  height: 3px;
-}
-
-.pane-scroll::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.14);
-  border-radius: 3px;
+  /* Chat transcript nick hues — sharper saturation vs soft pastels */
+  --u1: #459cff;
+  --u2: #7ae055;
+  --u3: #e9b518;
+  --u4: #ff6b97;
+  --u5: #a97cff;
+  --u6: #20e8dc;
 }
 
-.pane-scroll::-webkit-scrollbar-thumb {
-  background: rgba(74, 86, 75, 0.75);
-  border-radius: 3px;
+html {
+  @apply overflow-x-hidden bg-[color:var(--bg)];
 }
 
-.pane-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 115, 100, 0.88);
+/* Desktop: fixed viewport chrome; Mobile: scroll the document — html must not clip overflow */
+@media (width < 1024px) {
+  html {
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (width >= 1024px) {
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+body.body-wrap {
+  /* Match pre-Tailwind rendering: no Tailwind antialiased (grayscale/thinner text on macOS) */
+  @apply m-0 min-h-dvh px-[clamp(0.5rem,2.5vw,2.25rem)] py-[clamp(0.5rem,2.5vw,2.25rem)] font-mono leading-relaxed overflow-x-hidden text-[15px];
+  /* Mobile: single scroll root is html — body grows with content; lg: pane layout fills one screen */
+  @apply max-lg:overflow-visible;
+  @apply lg:h-dvh lg:overflow-hidden;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(121, 224, 137, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 100% 100%, rgba(125, 196, 244, 0.06), transparent 60%),
+    var(--bg);
+}
+
+.scrollbar-pane {
+  @apply max-lg:overflow-visible lg:overflow-y-auto lg:overflow-x-hidden;
+}
+
+@media (width >= 1024px) {
+  .scrollbar-pane {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(74, 86, 75, 0.75) rgba(0, 0, 0, 0.14);
+  }
+  .scrollbar-pane::-webkit-scrollbar {
+    width: 4px;
+    height: 3px;
+  }
+  .scrollbar-pane::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.14);
+    border-radius: 3px;
+  }
+  .scrollbar-pane::-webkit-scrollbar-thumb {
+    background: rgba(74, 86, 75, 0.75);
+    border-radius: 3px;
+  }
+  .scrollbar-pane::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 115, 100, 0.88);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  ::before,
+  ::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

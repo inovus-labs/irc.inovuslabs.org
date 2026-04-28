@@ -13,8 +13,10 @@ const { title, description } = Astro.props;
   <head>
     <SEO title={title} description={description} />
   </head>
-  <body>
-    <a class="skip" href="#main">Skip to content</a>
+  <body class="body-wrap selection:bg-[color:var(--accent-soft)] selection:text-[color:var(--text-strong)]">
+    <a
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[20] focus:rounded-sm focus:border focus:border-[color:var(--accent)] focus:bg-[color:var(--panel)] focus:p-2 focus:text-[color:var(--text-strong)] focus:outline-none"
+      href="#main">Skip to content</a>
     <slot />
   </body>
 </html>

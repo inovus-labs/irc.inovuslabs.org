@@ -3,140 +3,171 @@ import { site, youNick, members } from "../data/site";
 
 const onlineCount = members.length;
 ---
-<main id="main">
-  <div class="titlebar" aria-hidden="true">
-    <span class="dots">
-      <span class="dot r"></span>
-      <span class="dot y"></span>
-      <span class="dot g"></span>
+<main
+  id="main"
+  class:list={[
+    "terminal-shell",
+    "mx-auto flex w-full max-w-[1480px] flex-col",
+    "max-lg:h-auto max-lg:min-h-0 max-lg:w-full max-lg:p-0",
+    "lg:mx-auto lg:h-[calc(100dvh-2_*_clamp(0.5rem,2.5vw,2.25rem))] lg:min-h-0 lg:overflow-hidden",
+  ]}
+>
+  <div
+    aria-hidden="true"
+    class="terminal-head flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2"
+  >
+    <span class="inline-flex gap-[0.35rem]">
+      <span class="traffic traffic-close h-[11px] w-[11px] rounded-full" aria-hidden="true"></span>
+      <span class="traffic traffic-min h-[11px] w-[11px] rounded-full" aria-hidden="true"></span>
+      <span class="traffic traffic-max h-[11px] w-[11px] rounded-full" aria-hidden="true"></span>
     </span>
-    <span class="who"><b>{youNick}</b>@{site.network} — {site.host}</span>
-    <span class="status" title={`${onlineCount} users online`}>
-      <span class="ping" aria-hidden="true"></span>
-      <span class="status-text">{onlineCount} online</span>
+    <span class="terminal-who ml-1 text-[0.78rem]">
+      <strong>{youNick}</strong>@{site.network}
+      —
+      {site.host}
+    </span>
+    <span
+      class="terminal-badge ml-auto inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[0.72rem]"
+      title={`${onlineCount} users online`}
+    >
+      <span class="status-ping h-[7px] w-[7px] rounded-full" aria-hidden="true"></span>
+      <span>{onlineCount} online</span>
     </span>
   </div>
 
-  <div class="promptbar">
-    <span class="prompt-text">welcome to the {site.network} irc network</span>
-    <span class="caret" aria-hidden="true"></span>
+  <div
+    class="terminal-prompt flex items-center gap-2 px-4 py-2 text-[0.82rem] max-lg:flex-wrap max-lg:break-all"
+  >
+    <span class="terminal-prompt-bar shrink-0">irc@inovuslabs:~$</span>
+    <span>welcome to the {site.network} irc network</span>
+    <span
+      class="caret-inline inline-block h-[1em] w-2 shrink-0 motion-safe:animate-[caretBlink_1.05s_steps(1,end)_infinite]"
+      aria-hidden="true"></span>
   </div>
 
-  <div class="content">
+  <div class="terminal-content flex min-h-0 flex-1 flex-col p-[clamp(0.8rem,1.6vw,1.15rem)] max-lg:flex-none lg:min-h-0 lg:overflow-hidden">
     <slot />
   </div>
 </main>
 
 <style>
-  main {
-    width: 100%;
-    max-width: 1480px;
-    margin: 0 auto;
-    height: calc(100dvh - (2 * clamp(0.5rem, 2.5vw, 2.25rem)));
-    border: 1px solid var(--line-2);
-    background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.02) inset,
-      0 30px 80px -30px rgba(0, 0, 0, 0.7),
-      0 0 60px -20px rgba(121, 224, 137, 0.08);
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+  /* Shell surfaces — use CSS variables so colors always match theme tokens */
+  .terminal-shell {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    main { animation: rise 0.5s ease-out both; }
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: none; }
+
+  @media (width >= 1024px) {
+    .terminal-shell {
+      border-radius: 10px;
+      border: 1px solid var(--line-2);
+      background: linear-gradient(to bottom, var(--panel), var(--panel-2));
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 30px 80px -30px rgba(0, 0, 0, 0.7),
+        0 0 60px -20px rgba(121, 224, 137, 0.08);
     }
   }
 
-  .titlebar {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem 0.6rem;
-    padding: 0.55rem 0.85rem;
+  .terminal-head {
+    flex-shrink: 0;
     border-bottom: 1px solid var(--line);
     background: linear-gradient(180deg, #14181f 0%, #0e1218 100%);
   }
-  .dots { display: inline-flex; gap: 0.35rem; }
-  .dot {
-    width: 11px; height: 11px; border-radius: 50%;
-    background: #2a2f29;
-    border: 1px solid rgba(255,255,255,0.05);
-  }
-  .dot.r { background: #f4736a; }
-  .dot.y { background: #f4cf7d; }
-  .dot.g { background: #79e089; }
 
-  .who {
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-left: 0.4rem;
+  @media (width >= 1024px) {
+    .terminal-head {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
   }
-  .who b { color: var(--text); font-weight: 500; }
 
-  .status {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.72rem;
+  .traffic {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .traffic-close {
+    background: #f4736a;
+  }
+  .traffic-min {
+    background: #f4cf7d;
+  }
+  .traffic-max {
+    background: #79e089;
+  }
+
+  .terminal-who {
     color: var(--muted);
-    padding: 0.15rem 0.45rem;
+  }
+  .terminal-who strong {
+    font-weight: 600;
+    color: var(--text-strong);
+  }
+
+  .terminal-badge {
+    color: var(--muted);
     border: 1px solid var(--line);
-    border-radius: 999px;
-    background: rgba(121,224,137,0.04);
+    background: rgba(121, 224, 137, 0.06);
   }
-  .ping {
-    width: 7px; height: 7px; border-radius: 50%;
+  .terminal-badge > span:last-child {
+    color: var(--text);
+  }
+
+  .status-ping {
     background: var(--accent);
     box-shadow: 0 0 0 0 var(--accent-glow);
-    animation: ping 1.8s ease-out infinite;
   }
-  @keyframes ping {
-    0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
-    70%  { box-shadow: 0 0 0 7px rgba(121, 224, 137, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(121, 224, 137, 0); }
-  }
-  .status-text { color: var(--text); }
 
-  .promptbar {
-    padding: 0.5rem 0.95rem;
+  .terminal-prompt {
     border-bottom: 1px solid var(--line);
-    color: var(--muted);
-    font-size: 0.82rem;
     background: var(--inset);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    color: var(--muted);
   }
-  .promptbar::before {
-    content: "irc@inovuslabs:~$";
+
+  .terminal-prompt-bar {
     color: var(--accent);
+    font-weight: 500;
   }
-  .caret {
-    display: inline-block;
-    width: 8px; height: 1em;
+
+  .caret-inline {
     background: var(--accent);
     vertical-align: -2px;
-    animation: blink 1.05s steps(1) infinite;
   }
-  @keyframes blink { 50% { opacity: 0; } }
 
-  .content {
-    padding: clamp(0.8rem, 1.6vw, 1.15rem);
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+  @supports (prefers-reduced-motion: no-preference) {
+    main.terminal-shell {
+      animation: rise 0.5s ease-out both;
+    }
+    main.terminal-shell .status-ping {
+      animation: pingGlow 1.8s ease-out infinite;
+    }
   }
-  .content > :global(*) {
-    flex: 1;
-    min-height: 0;
-    width: 100%;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pingGlow {
+    0% {
+      box-shadow: 0 0 0 0 var(--accent-glow);
+    }
+    70% {
+      box-shadow: 0 0 0 7px rgba(121, 224, 137, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(121, 224, 137, 0);
+    }
+  }
+  @keyframes caretBlink {
+    50% {
+      opacity: 0;
+    }
   }
 </style>

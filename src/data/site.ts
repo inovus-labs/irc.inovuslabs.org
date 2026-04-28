@@ -50,7 +50,7 @@ export type ChatLine =
   | ({ type: "action"; who: string; text: string; ts: string } & ChatExtras);
 
 export const chatScript: ChatLine[] = [
-  { type: "sys", arrow: "in", text: `connected to ${site.host}/${site.tlsPort} (TLS)`, ts: "14:02", group: "boot" },
+  { type: "sys", arrow: "in", text: `connected to ${site.host}/${site.tlsPort}`, ts: "14:02", group: "boot" },
   { type: "sys", text: `you are now known as ${youNick}`, ts: "14:02", group: "boot" },
   { type: "join", who: "arjun", ts: "14:02", group: "boot" },
   {
@@ -74,7 +74,7 @@ export const chatScript: ChatLine[] = [
   {
     type: "msg",
     who: "nikhil",
-    text: `Thu 7pm is the informal sync unless the topic drifts · same hostname (${site.host}), TLS only`,
+    text: `Thu 7pm is the informal sync unless the topic drifts · same hostname (${site.host})`,
     ts: "14:03",
     group: "a",
   },

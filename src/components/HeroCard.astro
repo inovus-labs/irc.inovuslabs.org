@@ -15,7 +15,7 @@ const fullAddress = `${site.host}:${site.tlsPort}`;
 
   <div class="target" aria-label="server address">
     <span class="dotpulse" aria-hidden="true"></span>
-    <span class="addr"><code>{site.host}</code>:<code>{site.tlsPort}</code> <small>(TLS)</small></span>
+    <span class="addr"><code>{site.host}</code>:<code>{site.tlsPort}</code></span>
     <CopyButton value={fullAddress} label="Copy server address" />
   </div>
 
@@ -44,8 +44,9 @@ const fullAddress = `${site.host}:${site.tlsPort}`;
     margin: 0 0 0.55rem;
     color: var(--text-strong);
     font-size: clamp(1.1rem, 1.1vw + 0.7rem, 1.95rem);
+    font-weight: 600;
     line-height: 1.15;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     max-width: none;
   }
 
