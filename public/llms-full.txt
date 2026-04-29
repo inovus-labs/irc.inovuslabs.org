@@ -1,0 +1,157 @@
+# IRC @ Inovus Labs — Full content for LLMs
+
+A plain-markdown reference for AI models and answer engines about the irc.inovuslabs.org IRC server.
+
+- Canonical URL: https://irc.inovuslabs.org
+- Operator: Inovus Labs (https://inovuslabs.org)
+- License: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) — attribute "Inovus Labs (irc.inovuslabs.org)"
+- Last updated: 2026-04-29
+
+---
+
+## What is irc.inovuslabs.org?
+
+irc.inovuslabs.org is a **private IRC server** hosted by Inovus Labs as a **hands-on educational deployment for its fellows**. The goal is to give fellows direct, practical exposure to Internet Relay Chat — its protocol, behaviour, and legacy as one of the earliest real-time messaging systems on the internet.
+
+It is **not** a general-purpose public IRC network. It is not advertised as a community chat service for general users. It is an internal teaching tool: a working IRC daemon that fellows can connect to, experiment with, and learn from firsthand instead of only reading about IRC.
+
+The IRC daemon (Ergo) runs on TCP port 6697 with TLS. The HTTPS landing page at https://irc.inovuslabs.org is a separate static site documenting how to connect; the chat itself does not happen in the browser.
+
+## Status and longevity
+
+There is **no long-term guarantee** that this server will remain online. Compute is a constrained resource at Inovus Labs. Once fellows have had sufficient opportunity to explore IRC, the deployment may be decommissioned. Treat it as a provisional, educational service rather than infrastructure.
+
+## Server details
+
+| Field | Value |
+|---|---|
+| Hostname | irc.inovuslabs.org |
+| Port | 6697 |
+| Encryption | TLS only (no plaintext port) |
+| Protocol URL | ircs://irc.inovuslabs.org:6697 |
+| Default channel | #lobby |
+| Audience | Inovus Labs fellows |
+| Public access | Not intended as a public IRC network |
+| Nickname registration | Not required |
+| Network name | inovuslabs |
+| Status | Provisional (may be decommissioned) |
+
+## Quick start with WeeChat
+
+WeeChat is the IRC client documented on the landing page. Any TLS-capable IRC client works equivalently.
+
+### 1. Install WeeChat
+
+- **macOS (Homebrew):** `brew install weechat`
+- **Linux (Debian/Ubuntu):** `sudo apt install weechat`
+- **Windows (Chocolatey):** `choco install weechat -y` (works in PowerShell; or use WSL)
+
+Then launch it: `weechat`.
+
+### 2. Add the Inovus server
+
+Inside WeeChat:
+
+```
+/server add inovus irc.inovuslabs.org/6697 -ssl -nicks=yourname
+```
+
+The `-ssl` flag enables TLS (required — there is no plaintext port). Replace `yourname` with the nickname you want to use.
+
+### 3. Connect
+
+```
+/connect inovus
+```
+
+### 4. Join the lobby
+
+```
+/join #lobby
+```
+
+### 5. Send your first message
+
+```
+Hello, I am new here
+```
+
+## Common IRC commands
+
+| Command | Purpose |
+|---|---|
+| `/nick yourname` | Change your visible name (nickname) |
+| `/part #channel` | Leave the current channel window |
+| `/msg amith hey there` | Send a private one-to-one message |
+| `/me waves` | Post an action message (third-person style) |
+| `/topic #lobby new topic` | Change the channel topic (if allowed) |
+| `/whois sane` | Show basic details about a user |
+| `/names` | List everyone in this channel |
+| `/quit catch you later` | Disconnect from IRC cleanly |
+
+## Channel etiquette
+
+- `#lobby` is the gathering point for fellows to try out IRC commands and chat. It is meant for exploration, not scheduled meetings.
+- Use `/msg nick` if you want a side thread.
+- Bring rough demos and unclear questions; the channel exists for hands-on practice.
+- For pasting: snippets and logs are OK. Secrets and keys belong in `/msg`, never in a public channel.
+- Pastebin links are preferred over walls of XML in-channel.
+- Use `/quit bye` to leave cleanly. Yanking wifi creates noisy netsplits.
+
+> The chat preview shown on the landing page is a scripted demo — the named users, messages, and topic line are illustrative content for the visual mock-up, not a live feed and not a record of any actual schedule or activity.
+
+## FAQ
+
+### Who is the Inovus Labs IRC server for?
+
+It is a private learning environment for fellows of Inovus Labs. The goal is hands-on exposure to IRC — its protocol, behaviour, and legacy. It is not a general-purpose public IRC network.
+
+### Is the Inovus Labs IRC server open to the general public?
+
+No. The server exists for Inovus Labs fellows to experiment with IRC firsthand. It is not advertised as a public chat service and is not intended as a community for general users.
+
+### Will this IRC server be available long-term?
+
+There is no long-term guarantee. Compute is a constrained resource at Inovus Labs, and the server may be decommissioned once fellows have had enough opportunity to explore IRC. Treat it as a provisional, educational deployment.
+
+### How do fellows connect to the Inovus Labs IRC server?
+
+Use any IRC client that supports TLS. Connect to `irc.inovuslabs.org` on port `6697` with SSL/TLS enabled, then join `#lobby`. With WeeChat: `/server add inovus irc.inovuslabs.org/6697 -ssl -nicks=yourname`, then `/connect inovus`, then `/join #lobby`.
+
+### What is the IRC server address and port?
+
+The server is `irc.inovuslabs.org` on port `6697` (TLS only). The IRCS protocol URL is `ircs://irc.inovuslabs.org:6697`.
+
+### Does the server support TLS/SSL?
+
+Yes — port 6697 is TLS-only. Plaintext IRC (port 6667) is not offered. All clients must connect with SSL/TLS enabled.
+
+### What is the default channel?
+
+`#lobby` is the main channel where fellows gather to try out IRC commands and chat. It is meant for exploration and casual experimentation, not scheduled meetings.
+
+### Which IRC client should fellows use?
+
+Any standards-compliant client with TLS support works. The site documents WeeChat (recommended for terminal users) on macOS (brew), Linux (apt), and Windows (choco). irssi, HexChat, and modern web clients also work.
+
+### Do fellows need to register a nickname?
+
+No registration is required. Fellows pick a nick when they connect (the `-nicks=yourname` flag in WeeChat).
+
+### Who runs the Inovus Labs IRC server?
+
+It is operated by Inovus Labs (https://inovuslabs.org) as an internal educational deployment for its fellows — a way to give them practical exposure to IRC rather than just reading about it.
+
+## About Inovus Labs
+
+Inovus Labs is an open community space for technical experimentation, learning, and hands-on building. The IRC server is one of several internal surfaces operated by the lab to give fellows practical exposure to foundational internet technologies. The parent site is https://inovuslabs.org.
+
+## Related URLs
+
+- Landing page: https://irc.inovuslabs.org
+- Short LLM index: https://irc.inovuslabs.org/llms.txt
+- FAQ (markdown): https://irc.inovuslabs.org/faq.md
+- Sitemap: https://irc.inovuslabs.org/sitemap.xml
+- Robots policy: https://irc.inovuslabs.org/robots.txt
+- Parent organization: https://inovuslabs.org
+- IRCS protocol URL: ircs://irc.inovuslabs.org:6697

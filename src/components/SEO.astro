@@ -1,5 +1,5 @@
 ---
-import { site } from "../data/site";
+import { site, faq, howToSteps } from "../data/site";
 
 interface Props {
   title?: string;
@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title = `IRC @ Inovus Labs (${site.host})`,
-  description = `IRC server at ${site.host}:${site.tlsPort} (TLS) — learn and explore classic Internet Relay Chat at your own pace.`,
+  description = `IRC server at ${site.host}:${site.tlsPort} (TLS) — a private, hands-on environment for Inovus Labs fellows to experience Internet Relay Chat and its legacy. Provisional service.`,
 } = Astro.props;
 
 const keywords = [
@@ -22,6 +22,8 @@ const keywords = [
   "irssi",
 ].join(", ");
 
+const ircsUrl = `ircs://${site.host}:${site.tlsPort}`;
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -30,6 +32,7 @@ const jsonLd = {
       "@id": `${site.url}/#organization`,
       name: site.parentName,
       url: site.parentUrl,
+      logo: `${site.url}/icons/favicon-32x32.png`,
       sameAs: [site.parentUrl],
     },
     {
@@ -41,23 +44,89 @@ const jsonLd = {
       publisher: { "@id": `${site.url}/#organization` },
       inLanguage: "en",
       image: site.ogImage,
+      license: site.licenseUrl,
     },
     {
       "@type": "TechArticle",
-      headline: "IRC landing",
+      "@id": `${site.url}/#article`,
+      headline: "How to connect to the Inovus Labs IRC server",
       description,
       author: { "@id": `${site.url}/#organization` },
       publisher: { "@id": `${site.url}/#organization` },
       mainEntityOfPage: site.url,
       inLanguage: "en",
-      about: ["IRC", "Internet Relay Chat", "classic real-time messaging"],
+      image: site.ogImage,
+      datePublished: site.datePublished,
+      dateModified: site.dateModified,
+      keywords,
+      articleSection: "IRC",
+      about: ["IRC", "Internet Relay Chat", "WeeChat", "TLS", "real-time messaging"],
+      proficiencyLevel: "Beginner",
+      license: site.licenseUrl,
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", ".lede", "#quick-h"],
+      },
+    },
+    {
+      "@type": "Service",
+      "@id": `${site.url}/#service`,
+      name: "Inovus Labs IRC",
+      serviceType: "Internet Relay Chat (educational deployment)",
+      description,
+      provider: { "@id": `${site.url}/#organization` },
+      audience: { "@type": "Audience", audienceType: "Inovus Labs fellows" },
+      availableChannel: {
+        "@type": "ServiceChannel",
+        serviceUrl: ircsUrl,
+        availableLanguage: ["en"],
+      },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${site.url}/#faq`,
+      mainEntity: faq.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    },
+    {
+      "@type": "HowTo",
+      "@id": `${site.url}/#howto-connect`,
+      name: "Connect to the Inovus Labs IRC server with WeeChat",
+      description: "Step-by-step instructions to install WeeChat, add the Inovus IRC server with TLS, connect, and join #lobby.",
+      totalTime: "PT3M",
+      inLanguage: "en",
+      tool: [
+        { "@type": "HowToTool", name: "WeeChat" },
+        { "@type": "HowToTool", name: "Any IRC client with TLS support" },
+      ],
+      step: howToSteps.map((s, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        name: s.name,
+        text: s.text,
+        ...(s.code ? { itemListElement: [{ "@type": "HowToDirection", text: s.code }] } : {}),
+      })),
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${site.url}/#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "IRC @ Inovus Labs",
+          item: site.url,
+        },
+      ],
     },
   ],
 };
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <title>{title}</title>
 <meta name="description" content={description} />
@@ -66,6 +135,24 @@ const jsonLd = {
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 <meta name="googlebot" content="index, follow" />
 <link rel="canonical" href={site.url} />
+
+<link rel="alternate" hreflang="en" href={site.url} />
+<link rel="alternate" hreflang="x-default" href={site.url} />
+<link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-friendly summary" />
+<link rel="alternate" type="text/markdown" href="/llms-full.txt" title="Full content for LLMs" />
+<link rel="alternate" type="text/markdown" href="/faq.md" title="FAQ (markdown)" />
+
+<meta name="dc.title" content={title} />
+<meta name="dc.description" content={description} />
+<meta name="dc.language" content="en" />
+<meta name="dc.date" content={site.dateModified} />
+<meta name="dc.creator" content={site.parentName} />
+<meta name="dc.publisher" content={site.parentName} />
+<meta name="dc.rights" content={site.licenseUrl} />
+<meta name="dc.type" content="Service" />
+
+<meta property="article:published_time" content={site.datePublished} />
+<meta property="article:modified_time" content={site.dateModified} />
 
 <meta name="theme-color" content="#0b0c0f" />
 <meta name="msapplication-TileColor" content="#0b0c0f" />

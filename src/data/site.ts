@@ -7,7 +7,88 @@ export const site = {
   ogImage: "https://irc.inovuslabs.org/branding/og-image.png",
   parentUrl: "https://inovuslabs.org",
   parentName: "Inovus Labs",
+  datePublished: "2026-04-22",
+  dateModified: "2026-04-29",
+  licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+  licenseName: "CC BY 4.0",
 } as const;
+
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
+export const faq: FaqItem[] = [
+  {
+    q: "Who is the Inovus Labs IRC server for?",
+    a: "It is a private learning environment for fellows of Inovus Labs. The goal is hands-on exposure to Internet Relay Chat — its protocol, behaviour, and legacy as one of the original real-time messaging systems on the internet. It is not a general-purpose public IRC network.",
+  },
+  {
+    q: "Is the Inovus Labs IRC server open to the general public?",
+    a: "No. The server exists for Inovus Labs fellows to experiment with IRC firsthand. It is not advertised as a public chat service and is not intended as a community for general users.",
+  },
+  {
+    q: "Will this IRC server be available long-term?",
+    a: "There is no long-term guarantee. Compute is a constrained resource at Inovus Labs, and the server may be decommissioned once fellows have had enough opportunity to explore IRC. Treat it as a provisional, educational deployment.",
+  },
+  {
+    q: "How do fellows connect to the Inovus Labs IRC server?",
+    a: "Use any IRC client that supports TLS. Connect to irc.inovuslabs.org on port 6697 with SSL/TLS enabled, then join the #lobby channel. With WeeChat: /server add inovus irc.inovuslabs.org/6697 -ssl -nicks=yourname, then /connect inovus, then /join #lobby.",
+  },
+  {
+    q: "What is the IRC server address and port?",
+    a: "The server is irc.inovuslabs.org on port 6697 (TLS only). The IRCS protocol URL is ircs://irc.inovuslabs.org:6697.",
+  },
+  {
+    q: "Does the Inovus Labs IRC server support TLS/SSL?",
+    a: "Yes — port 6697 is TLS-only. Plaintext IRC (port 6667) is not offered. All clients must connect with SSL/TLS enabled.",
+  },
+  {
+    q: "What is the default channel?",
+    a: "#lobby is the main channel where fellows gather to try out IRC commands and chat. It is meant for exploration and casual experimentation, not scheduled meetings.",
+  },
+  {
+    q: "Which IRC client should fellows use?",
+    a: "Any standards-compliant client with TLS support works. The site documents WeeChat (recommended for terminal users) on macOS (brew), Linux (apt), and Windows (choco). irssi, HexChat, and modern web clients also work.",
+  },
+  {
+    q: "Do fellows need to register a nickname?",
+    a: "No registration is required. Fellows pick a nick when they connect (the -nicks=yourname flag in WeeChat).",
+  },
+  {
+    q: "Who runs the Inovus Labs IRC server?",
+    a: "It is operated by Inovus Labs (inovuslabs.org) as an internal educational deployment for its fellows — a way to give them practical exposure to IRC rather than just reading about it.",
+  },
+];
+
+export interface HowToStep {
+  name: string;
+  text: string;
+  code?: string;
+}
+
+export const howToSteps: HowToStep[] = [
+  {
+    name: "Install WeeChat",
+    text: "Install the WeeChat IRC client on your operating system. macOS: brew install weechat. Linux (Debian/Ubuntu): sudo apt install weechat. Windows: choco install weechat -y.",
+    code: "brew install weechat",
+  },
+  {
+    name: "Add the Inovus server",
+    text: "In WeeChat, register the Inovus IRC server with TLS enabled and your chosen nickname.",
+    code: "/server add inovus irc.inovuslabs.org/6697 -ssl -nicks=yourname",
+  },
+  {
+    name: "Connect to the server",
+    text: "Open the connection to the Inovus IRC server.",
+    code: "/connect inovus",
+  },
+  {
+    name: "Join the lobby channel",
+    text: "Join the #lobby channel and send your first message.",
+    code: "/join #lobby",
+  },
+];
 
 export const youNick = "arjun";
 

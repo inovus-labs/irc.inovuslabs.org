@@ -1,0 +1,54 @@
+# IRC @ Inovus Labs
+
+> A private IRC server hosted by Inovus Labs (https://inovuslabs.org) as a hands-on learning environment for its fellows. The goal is to give fellows direct exposure to Internet Relay Chat — its protocol, behaviour, and legacy as one of the original real-time messaging systems on the internet. This is **not** a general-purpose public IRC network.
+
+## Status
+
+- **Audience:** Inovus Labs fellows only.
+- **Purpose:** educational — let fellows experience IRC firsthand, not just read about it.
+- **Long-term availability:** not guaranteed. Compute is constrained at Inovus Labs, and the server may be decommissioned once fellows have explored the protocol enough.
+
+## Connection (for fellows)
+
+- **Host:** irc.inovuslabs.org
+- **Port:** 6697 (TLS / SSL only — plaintext 6667 is not offered)
+- **Protocol:** IRCS (`ircs://irc.inovuslabs.org:6697`)
+- **Default channel:** #lobby
+- **Operator:** Inovus Labs
+
+## Quick start (WeeChat)
+
+1. Install WeeChat — macOS: `brew install weechat`. Linux: `sudo apt install weechat`. Windows: `choco install weechat -y`.
+2. `/server add inovus irc.inovuslabs.org/6697 -ssl -nicks=yourname`
+3. `/connect inovus`
+4. `/join #lobby`
+
+Any modern IRC client with TLS support works (irssi, HexChat, etc.). The `-ssl` flag is required because the server only listens on a TLS port.
+
+## Common commands
+
+- `/nick yourname` — set/change your nickname
+- `/join #channel` — join a channel
+- `/part #channel` — leave a channel
+- `/msg user message` — private message
+- `/me action` — third-person action message
+- `/topic #channel new topic` — change channel topic (if allowed)
+- `/whois user` — show details about a user
+- `/names` — list users in current channel
+- `/quit goodbye` — disconnect cleanly
+
+## About
+
+Inovus Labs is an open community focused on hands-on technical experimentation. This IRC deployment is one of several internal surfaces used to give fellows practical exposure to foundational internet technologies. The `#lobby` channel is the gathering point for fellows to try out commands and chat — it is for exploration, not scheduled meetings.
+
+## Resources
+
+- [Site](https://irc.inovuslabs.org)
+- [Full content for LLMs](https://irc.inovuslabs.org/llms-full.txt)
+- [FAQ (markdown)](https://irc.inovuslabs.org/faq.md)
+- [Parent organization](https://inovuslabs.org)
+- [Sitemap](https://irc.inovuslabs.org/sitemap.xml)
+
+## License
+
+Site content licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Attribution: "Inovus Labs (irc.inovuslabs.org)".
