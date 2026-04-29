@@ -120,15 +120,19 @@ const row =
           <div class={`${row} qrow flex`} data-os-row="windows" hidden>
             <div class="flex w-full min-w-0 flex-col gap-2">
               <div class="flex min-w-0 items-start justify-between gap-3">
-                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">choco install weechat -y</code>
-                <CopyButton value="choco install weechat -y" label="Copy Chocolatey install command" />
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">wsl --install</code>
+                <CopyButton value="wsl --install" label="Copy WSL install command" />
+              </div>
+              <div class="flex min-w-0 items-start justify-between gap-3">
+                <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">sudo apt install weechat</code>
+                <CopyButton value="sudo apt install weechat" label="Copy apt install command" />
               </div>
               <div class="flex min-w-0 items-start justify-between gap-3">
                 <code class="min-w-0 flex-1 break-words rounded border border-[rgba(121,224,137,0.2)] bg-[rgba(121,224,137,0.12)] px-1 py-px text-[0.82rem] text-[color:var(--accent)]">weechat</code>
                 <CopyButton value="weechat" label="Copy WeeChat launch command" />
               </div>
             </div>
-            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Windows: install with Chocolatey, then run <code class="text-[0.8em] text-[color:var(--muted-2)]">weechat</code> (e.g. in WSL or on PATH).</span>
+            <span class="text-[0.82rem] leading-snug text-[color:var(--muted)]">Windows: enable WSL (one-time), open your WSL distro, then install and run <code class="text-[0.8em] text-[color:var(--muted-2)]">weechat</code>. WeeChat has no native Windows build.</span>
           </div>
           <div class={`${sep}`}>Connect in WeeChat</div>
           <div class={`${row} qrow flex`}>

@@ -49,7 +49,7 @@ export const faq: FaqItem[] = [
   },
   {
     q: "Which IRC client should fellows use?",
-    a: "Any standards-compliant client with TLS support works. The site documents WeeChat (recommended for terminal users) on macOS (brew), Linux (apt), and Windows (choco). irssi, HexChat, and modern web clients also work.",
+    a: "Any standards-compliant client with TLS support works. The site documents WeeChat (recommended for terminal users) on macOS (brew), Linux (apt), and Windows (via WSL). irssi, HexChat, and modern web clients also work.",
   },
   {
     q: "Do fellows need to register a nickname?",
@@ -70,7 +70,7 @@ export interface HowToStep {
 export const howToSteps: HowToStep[] = [
   {
     name: "Install WeeChat",
-    text: "Install the WeeChat IRC client on your operating system. macOS: brew install weechat. Linux (Debian/Ubuntu): sudo apt install weechat. Windows: choco install weechat -y.",
+    text: "Install the WeeChat IRC client on your operating system. macOS: brew install weechat. Linux (Debian/Ubuntu): sudo apt install weechat. Windows: enable WSL with wsl --install, then inside WSL run sudo apt install weechat.",
     code: "brew install weechat",
   },
   {
