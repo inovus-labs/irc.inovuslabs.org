@@ -1,10 +1,10 @@
 ---
 name: Astro Upgrade
-description: Weekly check for new Astro releases. If found, reads the changelog and upgrade docs, then creates a PR with all required changes.
+description: Bi-weekly check for new Astro releases. If found, reads the changelog and upgrade docs, then creates a PR with all required changes.
 
 on:
   schedule:
-    - cron: "weekly"
+    - cron: "bi-weekly"
   workflow_dispatch:
 
 permissions:
