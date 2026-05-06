@@ -14,6 +14,9 @@ permissions:
 
 timeout-minutes: 30
 
+engine:
+  id: claude
+
 tools:
   github:
     toolsets: [default]
@@ -25,6 +28,7 @@ network:
   allowed:
     - node
     - github
+    - api.anthropic.com
     - "docs.astro.build"
 
 safe-outputs:
